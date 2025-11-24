@@ -1,0 +1,37 @@
+class OperationModel:
+name: str
+return_type: Optional[TypeModel] = None
+parameters: List[ParameterModel] = field(default_factory=list)
+visibility: Visibility = Visibility.PACKAGE
+is_static: bool = False
+is_abstract: bool = False
+
+
+def signature(self) -> str:
+params = ", ".join(f"{p.name}: {p.type.name if p.type else 'Any'}" for p in self.parameters)
+ret = self.return_type.name if self.return_type else "void"
+return f"{self.name}({params}) -> {ret}"
+
+
+def to_dict(self) -> Dict[str, Any]:
+return {
+"name": self.name,
+"return_type": self.return_type.to_dict() if self.return_type else None,
+"parameters": [p.to_dict() for p in self.parameters],
+"visibility": self.visibility.value,
+"is_static": self.is_static,
+"is_abstract": self.is_abstract,
+}
+
+
+@staticmethod
+def from_dict(d: Dict[str, Any]) -> "OperationModel":
+rt = d.get("return_type")
+return OperationModel(
+name=d.get("name", "<op>"),
+return_type=TypeModel.from_dict(rt) if rt else None,
+parameters=[ParameterModel.from_dict(p) for p in d.get("parameters", [])],
+visibility=Visibility.from_string(d.get("visibility")),
+is_static=bool(d.get("is_static", False)),
+is_abstract=bool(d.get("is_abstract", False)),
+)
