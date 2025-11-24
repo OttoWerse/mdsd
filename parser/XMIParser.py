@@ -30,6 +30,10 @@ class XmiParser:
             xpath_expression = fr"//*[@{attr_name}='%s']{attr_value}"
         parent_element.findall(xpath_expression)
 
+    def get_elements_by_tag_name_namespace(self, param):
+        # TODO
+        pass
+
     def parse_models(self):
         root = self.get_document_object()
         root_node_list = self.get_elements_by_tag_name_namespace('uml')
