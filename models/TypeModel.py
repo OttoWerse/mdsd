@@ -1,3 +1,6 @@
+from dataclasses import field
+from typing import List, Optional, Dict, Any
+
 
 class TypeModel:
     name: str

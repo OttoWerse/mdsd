@@ -1,4 +1,6 @@
-import self
+from typing import Optional, Any, Dict
+
+from models import TypeModel
 
 
 class ParameterModel:

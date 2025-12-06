@@ -1,3 +1,8 @@
+from dataclasses import field
+from typing import Optional, List, Dict, Any
+
+from models import AttributeModel, OperationModel
+
 
 class ClassModel:
     name: str

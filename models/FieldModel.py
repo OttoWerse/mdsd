@@ -1,3 +1,6 @@
+from models import TypeModel
+
+
 class FieldModel:
     name: str
     type: TypeModel
