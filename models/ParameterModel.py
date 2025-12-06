@@ -1,3 +1,6 @@
+import self
+
+
 class ParameterModel:
 
 def __init__(self, name: str, type_: str):

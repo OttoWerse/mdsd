@@ -1,3 +1,7 @@
+import parameter
+import return_type
+
+
 class MethodModel:
 
 def __init__(self, name: str, return_type: str = None):
