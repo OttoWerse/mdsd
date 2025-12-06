@@ -1,9 +1,16 @@
 class FieldModel:
+    name: str
+    type: TypeModel
+    visibility: VisibilityModel = VisibilityModel.PUBLIC
+    is_static: bool = False
+    is_final: bool = False
 
-def __init__(self, name: str, type_: str):
-self.name = name
-self.type = type_
+    def __str__(self):
+        mods = []
+        if self.is_static:
+            mods.append("static")
+        if self.is_final:
+            mods.append("final")
 
-
-def __repr__(self):
-return f"FieldModel(name={self.name}, type={self.type})"
+        modifiers = " ".join(mods)
+        return f"{self.visibility.value} {modifiers} {self.type.name} {self.name}".strip()

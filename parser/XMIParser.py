@@ -22,10 +22,18 @@ class XmiParser:
         if parent_element is None:
             # TODO: Log failure
             return None
-        # TODO: I have no idea how to use this ATM, or if we even really need to do all that just to find a hand full of elements
-        namespace = {'uml': 'uml', 'xmi': 'xmi'}
+        # TODO: use namespaces correctly
+        # TODO: Constants and other such woke OOP nonsense
         if is_entire_document:
             xpath_expression = fr".//*[@{attr_name}='{attr_value}']"
         else:
             xpath_expression = fr"//*[@{attr_name}='%s']{attr_value}"
         parent_element.findall(xpath_expression)
+
+    def get_elements_by_tag_name_namespace(self, param):
+        # TODO
+        pass
+
+    def parse_models(self):
+        root = self.get_document_object()
+        root_node_list = self.get_elements_by_tag_name_namespace('uml')
