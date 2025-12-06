@@ -68,17 +68,6 @@ class XmiParser:
                 return []
         return associations
 
-    def get_all_ends_of_association(self, association):
-        """Returns all ends of a given association"""
-        ends = []
-        for child in association.children:
-            match child.name:
-                case 'ownedEnd':
-                    end_id = child['type']
-                    print(end_id)
-                    ends.append(child)
-        return ends
-
 
 if __name__ == '__main__':
     """Main function"""
