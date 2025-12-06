@@ -52,7 +52,16 @@ class XmiParser:
                         association_name = node['name']
                     except Exception as e:
                         association_name = node['xmi:type']
-                    ends = self.get_all_ends_of_association(node)
+                    ends = []
+                    # TODO: Check for exactly 2 children!
+                    for child in node.children:
+                        match child.name:
+                            case 'ownedEnd':
+                                end_id = child['type']
+                                ends.append(end_id)
+                    left_end = ends[0]
+                    right_end = ends[1]
+                    print(f'{association_name} -> {left_end} -> {right_end}')
                     associations.append(node)
             except Exception as e:
                 print(f'EXCEPTION: {e}')
@@ -65,7 +74,7 @@ class XmiParser:
         for child in association.children:
             match child.name:
                 case 'ownedEnd':
-                    end_id = child['xmi:id']
+                    end_id = child['type']
                     print(end_id)
                     ends.append(child)
         return ends
