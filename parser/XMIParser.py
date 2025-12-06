@@ -1,39 +1,56 @@
-import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
+import lxml
 
 
 class XmiParser:
-    xmi_path_name = None
-
-    def get_document_object(self):
-        if self.xmi_path_name is None:
-            # TODO: Log failure
-            return None
+    def __init__(self, file_path):
         try:
-            return ET.parse(self.xmi_path_name)  # TODO: Should this be root? .getRoot()
-
+            # TODO: Check if file is actually an XML file!
+            file_object = open(file_path, 'r')
+            file_content = file_object.read()
+            # TODO: Check for lxml installed! (required by BS4 but not correctly enforced)
+            self.xmi_tree = BeautifulSoup(file_content, 'xml')
         except Exception as e:
-            # TODO: Log failure
-            print(e)
-            return None
+            print(f'{e}')
 
-    def find_elements(self, parent_element, attr_name, attr_value, is_entire_document):
-        if attr_name is None:
-            return None
-        if parent_element is None:
-            # TODO: Log failure
-            return None
-        # TODO: use namespaces correctly
-        # TODO: Constants and other such woke OOP nonsense
-        if is_entire_document:
-            xpath_expression = fr".//*[@{attr_name}='{attr_value}']"
-        else:
-            xpath_expression = fr"//*[@{attr_name}='%s']{attr_value}"
-        parent_element.findall(xpath_expression)
+    def find_all_elements_by_name(self, name):
+        """Finds elements of a given name in entire tree"""
+        #
+        if self.xmi_tree is None:
+            pass
+        result = self.xmi_tree.find_all(name)
+        # TODO: Check if result is None or nah?
+        return result
 
-    def get_elements_by_tag_name_namespace(self, param):
-        # TODO
-        pass
 
-    def parse_models(self):
-        root = self.get_document_object()
-        root_node_list = self.get_elements_by_tag_name_namespace('uml')
+if __name__ == '__main__':
+    """Main function"""
+    parser = XmiParser(r'H:\Users\Otto\Documents\VPProjects\facade_mikrowelle.xmi')
+    classes = []
+    associations = []
+    nodes = parser.find_all_elements_by_name('ownedMember')
+    for node in nodes:
+        try:
+            # node_namespace = node.namespace
+            # node_name = node.name
+            # node_value = node.value
+            node_type = node['xmi:type']
+            match node_type:
+                case 'uml:Class':
+                    classes.append(node)
+                case 'uml:Association':
+                    associations.append(node)
+        except Exception as e:
+            print(f'{e}')
+    # Handle associations
+    for association in associations:
+        try:
+            association_name = association['name']
+        except Exception as e:
+            try:
+                # TODO: Remove namespace and translate
+                association_name = association['xmi:type']
+            except Exception as e:
+                association_name = 'uses'
+                print(f'{e}')
+        input(association_name)
