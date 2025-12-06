@@ -1,3 +1,7 @@
+from typing import Optional, Dict, Any
+
+from models import TypeModel
+
 
 class AttributeModel:
     name: str

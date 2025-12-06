@@ -1,3 +1,8 @@
+from typing import Optional, Any, Dict
+
+from models import TypeModel
+
+
 class ParameterModel:
     name: str
     type: Optional["TypeModel"] = None
