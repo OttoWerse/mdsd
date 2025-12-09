@@ -1,6 +1,6 @@
 from typing import Any
 
-class AssociationModel:
+class RelationshipModel:
     def __init__(
         self,
         name: str,
