@@ -4,12 +4,21 @@ from typing import Optional, List, Any, Dict
 from models import ParameterModel, TypeModel
 
 class OperationModel:
-    name: str
-    return_type: Optional["TypeModel"] = None
-    parameters: List["ParameterModel"] = field(default_factory=list)
-    visibility: "Visibility" = None
-    is_static: bool = False
-    is_abstract: bool = False
+    def __init__(
+        self,
+        name: str,
+        return_type: Optional[TypeModel] = None,
+        parameters: Optional[List[ParameterModel]] = None,
+        visibility: Optional["Visibility"] = None,
+        is_static: bool = False,
+        is_abstract: bool = False
+    ):
+        self.name = name
+        self.return_type = return_type
+        self.parameters = parameters if parameters is not None else []
+        self.visibility = visibility
+        self.is_static = is_static
+        self.is_abstract = is_abstract
 
     def signature(self) -> str:
         params = ", ".join(

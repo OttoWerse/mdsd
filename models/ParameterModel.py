@@ -1,20 +1,23 @@
 from typing import Optional, Any, Dict
-
 from models import TypeModel
 
-
 class ParameterModel:
-    name: str
-    type: Optional["TypeModel"] = None
-    default: Optional[str] = None
-    direction: str = "in"  # UML: in, out, inout
+    def __init__(
+        self,
+        name: str,
+        type: Optional[TypeModel] = None,
+        default: Optional[str] = None,
+
+    ):
+        self.name = name
+        self.type = type
+        self.default = default
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "type": self.type.to_dict() if self.type else None,
             "default": self.default,
-            "direction": self.direction,
         }
 
     @staticmethod
@@ -24,5 +27,4 @@ class ParameterModel:
             name=d.get("name", "arg"),
             type=TypeModel.from_dict(t) if t else None,
             default=d.get("default"),
-            direction=d.get("direction", "in"),
         )
