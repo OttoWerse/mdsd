@@ -1,9 +1,5 @@
 import sys
-
 from bs4 import BeautifulSoup
-# This is only here to make PyCharm check for this package!
-import lxml
-
 from constants import FieldNames
 from models.ClassModel import ClassModel
 from models.RelationshipModel import RelationshipModel
@@ -16,7 +12,7 @@ class XmiParser:
             file_object = open(file_path, 'r')
             file_content = file_object.read()
             # TODO: Check for lxml installed! (required by BS4 but not correctly enforced)
-            self.xmi_tree = BeautifulSoup(file_content, 'xml')
+            self.xmi_soup = BeautifulSoup(file_content, 'xml')
             # TODO: Is this all we really need?
             self.nodes = self.find_all_elements_by_name('ownedMember')
         except Exception as e:
@@ -26,9 +22,9 @@ class XmiParser:
     def find_all_elements_by_name(self, name):
         """Finds elements of a given name in entire tree"""
         #
-        if self.xmi_tree is None:
+        if self.xmi_soup is None:
             pass
-        result = self.xmi_tree.find_all(name)
+        result = self.xmi_soup.find_all(name)
         # TODO: Check if result is None or nah?
         return result
 
