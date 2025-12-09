@@ -37,16 +37,16 @@ class XmiParser:
         return_classes = {}
         try:
             class_nodes = [node for node in self.nodes if
-                           node[XMIFieldNames.XMI_TYPE] == XMIFieldNames.UML_CLASS]
+                           node[FieldNames.XMI_TYPE] == FieldNames.UML_CLASS]
         except Exception as e:
             print(f'EXCEPTION getting class nodes: {e}')
             sys.exit()
         for class_node in class_nodes:
             try:
-                node_type = class_node[XMIFieldNames.XMI_TYPE]
-                if node_type == XMIFieldNames.UML_CLASS:
-                    class_id = class_node[XMIFieldNames.XMI_ID]
-                    class_name = class_node[XMIFieldNames.NAME]
+                node_type = class_node[FieldNames.XMI_TYPE]
+                if node_type == FieldNames.UML_CLASS:
+                    class_id = class_node[FieldNames.XMI_ID]
+                    class_name = class_node[FieldNames.NAME]
                     # Create ClassModel Object and add to dict
                     return_classes[class_id] = ClassModel(class_name, )
             except Exception as e:
@@ -59,30 +59,30 @@ class XmiParser:
         return_relationships = {}
         try:
             relationship_nodes = [node for node in self.nodes if
-                                  node[XMIFieldNames.XMI_TYPE] == XMIFieldNames.UML_ASSOCIATION]
+                                  node[FieldNames.XMI_TYPE] == FieldNames.UML_ASSOCIATION]
         except Exception as e:
             print(f'EXCEPTION getting relationship nodes: {e}')
             sys.exit()
         for relationship_node in relationship_nodes:
             # Get id of relationship node
             try:
-                relationship_id = relationship_node[XMIFieldNames.XMI_ID]
+                relationship_id = relationship_node[FieldNames.XMI_ID]
                 # Get name of relationship from XMI file or set it based on relationship type
                 relationship_name = ''
                 try:
-                    relationship_name = relationship_node[XMIFieldNames.NAME]
+                    relationship_name = relationship_node[FieldNames.NAME]
                 except Exception as e:
                     try:
-                        match relationship_node[XMIFieldNames.XMI_TYPE]:
+                        match relationship_node[FieldNames.XMI_TYPE]:
                             # TODO: Add cases for known relationships, use constants and translate later in renderGerman
                             case _:
-                                relationship_name = relationship_node[XMIFieldNames.XMI_TYPE]
+                                relationship_name = relationship_node[FieldNames.XMI_TYPE]
                     except Exception as e:
                         print(f'ERROR: no relationship name or type found for {relationship_node}')
                         sys.exit()
                 # Get ends of relationship from XMI
-                ends = [child[XMIFieldNames.TYPE] for child in relationship_node.children if
-                        child.name == XMIFieldNames.OWNED_END]
+                ends = [child[FieldNames.TYPE] for child in relationship_node.children if
+                        child.name == FieldNames.OWNED_END]
                 # Check for exactly two ends
                 if len(ends) != 2:
                     print(f'ERROR: more than two ends found for {relationship_name}')
