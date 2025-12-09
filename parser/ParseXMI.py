@@ -43,12 +43,10 @@ class XmiParser:
             sys.exit()
         for class_node in class_nodes:
             try:
-                node_type = class_node[FieldNames.XMI_TYPE]
-                if node_type == FieldNames.UML_CLASS:
-                    class_id = class_node[FieldNames.XMI_ID]
-                    class_name = class_node[FieldNames.NAME]
-                    # Create ClassModel Object and add to dict
-                    return_classes[class_id] = ClassModel(class_name, )
+                class_id = class_node[FieldNames.XMI_ID]
+                class_name = class_node[FieldNames.NAME]
+                # Create ClassModel Object and add to dict
+                return_classes[class_id] = ClassModel(class_name, )
             except Exception as e:
                 print(f'EXCEPTION parsing class: {e}')
                 sys.exit()
