@@ -1,0 +1,7 @@
+NAME = "name"
+TYPE = "type"
+OWNED_END = "ownedEnd"
+UML_ASSOCIATION = "uml:Association"
+UML_CLASS = "uml:Class"
+XMI_ID = "xmi:id"
+XMI_TYPE = "xmi:type"
