@@ -1,12 +1,23 @@
 from dataclasses import field
 from typing import List, Optional, Dict, Any
 
-
 class TypeModel:
     name: str
     package: Optional[str] = None
     generic_parameters: List["TypeModel"] = field(default_factory=list)
     is_primitive: bool = False
+
+    def __init__(
+        self,
+        name: str,
+        package: Optional[str] = None,
+        generic_parameters: Optional[List["TypeModel"]] = None,
+        is_primitive: bool = False,
+    ):
+        self.name = name
+        self.package = package
+        self.generic_parameters = generic_parameters if generic_parameters is not None else []
+        self.is_primitive = is_primitive
 
     def __repr__(self) -> str:
         if self.generic_parameters:

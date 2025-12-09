@@ -1,16 +1,25 @@
 from typing import Optional, Dict, Any
-
 from models import TypeModel
 
 
 class AttributeModel:
-    name: str
-    type: Optional["TypeModel"] = None
-    visibility: "Visibility" = None
-    multiplicity: Optional[str] = None
-    default_value: Optional[str] = None
-    is_static: bool = False
-    is_final: bool = False
+    def __init__(
+        self,
+        name: str,
+        type: Optional["TypeModel"] = None,
+        visibility: Optional["Visibility"] = None,
+        multiplicity: Optional[str] = None,
+        default_value: Optional[str] = None,
+        is_static: bool = False,
+        is_final: bool = False,
+    ):
+        self.name = name
+        self.type = type
+        self.visibility = visibility
+        self.multiplicity = multiplicity
+        self.default_value = default_value
+        self.is_static = is_static
+        self.is_final = is_final
 
     def to_dict(self) -> Dict[str, Any]:
         return {

@@ -1,19 +1,26 @@
-from dataclasses import field
+from dataclasses import dataclass, field
 from typing import List
 
-import parameter
-import return_type
-
-from models import TypeModel
+from models import ParameterModel, TypeModel
 
 
 class MethodModel:
-    name: str
-    return_type: TypeModel
-    parameters: List[ParameterModel] = field(default_factory=list)
-    visibility: VisibilityModel = VisibilityModel.PUBLIC
-    is_static: bool = False
-    is_abstract: bool = False
+
+    def __init__(
+        self,
+        name: str,
+        return_type: TypeModel,
+        parameters: List[ParameterModel] = None,
+        visibility: VisibilityModel = VisibilityModel.PUBLIC,
+        is_static: bool = False,
+        is_abstract: bool = False
+    ):
+        self.name = name
+        self.return_type = return_type
+        self.parameters = parameters if parameters is not None else []
+        self.visibility = visibility
+        self.is_static = is_static
+        self.is_abstract = is_abstract
 
     def __str__(self):
         mods = []
