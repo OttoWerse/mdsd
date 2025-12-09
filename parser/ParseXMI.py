@@ -53,6 +53,7 @@ class XmiParser:
             for operation_node in operation_nodes:
                 try:
                     operation_name = operation_node[FieldNames.NAME]
+                    # TODO: create MethodModel and add to ClassModel
                     print(f'{operation_name}')
                 except Exception as e:
                     print(f'EXCEPTION parsing operation: {e}')
@@ -66,6 +67,8 @@ class XmiParser:
                 for parameter_node in parameter_nodes:
                     try:
                         parameter_name = parameter_node[FieldNames.NAME]
+                        # TODO: Check parameter type = "return" and add to MethodModel return type
+                        # TODO: create ParameterModel and add to MethodModel
                         print(f'{parameter_name}')
                     except Exception as e:
                         print(f'EXCEPTION parsing operation: {e}')
