@@ -5,14 +5,25 @@ from models import AttributeModel, OperationModel
 
 
 class ClassModel:
-    name: str
-    package: Optional[str] = None
-    attributes: List["AttributeModel"] = field(default_factory=list)
-    operations: List["OperationModel"] = field(default_factory=list)
-    visibility: "Visibility" = Visibility.PUBLIC
-    is_abstract: bool = False
-    super_classes: List[str] = field(default_factory=list)
-    interfaces: List[str] = field(default_factory=list)
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        package: Optional[str] = None,
+        attributes: Optional[List["AttributeModel"]] = None,
+        operations: Optional[List["OperationModel"]] = None,
+        visibility: "Visibility" = None,
+        is_abstract: bool = False,
+        super_classes: Optional[List[str]] = None,
+        interfaces: Optional[List[str]] = None
+    ):
+        self.name = name or "<class>"
+        self.package = package
+        self.attributes = attributes or []
+        self.operations = operations or []
+        self.visibility = visibility or Visibility.PUBLIC
+        self.is_abstract = is_abstract
+        self.super_classes = super_classes or []
+        self.interfaces = interfaces or []
 
     def add_attribute(self, attr: "AttributeModel") -> None:
         self.attributes.append(attr)
