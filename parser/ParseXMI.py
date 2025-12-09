@@ -40,10 +40,24 @@ class XmiParser:
         for class_node in class_nodes:
             try:
                 class_id = class_node[FieldNames.XMI_ID]
-                class_name = class_node[FieldNames.NAME]
+                class_name = class_node[FieldNames.NAME]  # TODO: handle no name
             except Exception as e:
                 print(f'EXCEPTION parsing class: {e}')
                 sys.exit()
+            try:
+                attribute_nodes = [node for node in class_node.children if
+                                   node.name == FieldNames.OWNED_ATTRIBUTE]
+            except Exception as e:
+                print(f'EXCEPTION getting attribute nodes: {e}')
+                sys.exit()
+            for attribute_node in attribute_nodes:
+                try:
+                    attribute_name = attribute_node[FieldNames.NAME]  # TODO: handle no name
+                    # TODO: create AttributeModel and add to ClassModel.attributes
+                    print(f'{attribute_name}')
+                except Exception as e:
+                    print(f'EXCEPTION parsing attribute: {e}')
+                    sys.exit()
             try:
                 operation_nodes = [node for node in class_node.children if
                                    node.name == FieldNames.OWNED_OPERATION]
@@ -52,8 +66,8 @@ class XmiParser:
                 sys.exit()
             for operation_node in operation_nodes:
                 try:
-                    operation_name = operation_node[FieldNames.NAME]
-                    # TODO: create MethodModel and add to ClassModel
+                    operation_name = operation_node[FieldNames.NAME]  # TODO: handle no name
+                    # TODO: create OperationModel and add to ClassModel.operations
                     print(f'{operation_name}')
                 except Exception as e:
                     print(f'EXCEPTION parsing operation: {e}')
@@ -66,9 +80,9 @@ class XmiParser:
                     sys.exit()
                 for parameter_node in parameter_nodes:
                     try:
-                        parameter_name = parameter_node[FieldNames.NAME]
-                        # TODO: Check parameter type = "return" and add to MethodModel return type
-                        # TODO: create ParameterModel and add to MethodModel
+                        parameter_name = parameter_node[FieldNames.NAME]  # TODO: handle no name
+                        # TODO: Check parameter type = "return" and add to OperationModel return type
+                        # TODO: create ParameterModel and add to OperationModel.parameters
                         print(f'{parameter_name}')
                     except Exception as e:
                         print(f'EXCEPTION parsing operation: {e}')
