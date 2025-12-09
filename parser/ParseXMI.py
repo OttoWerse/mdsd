@@ -41,11 +41,41 @@ class XmiParser:
             try:
                 class_id = class_node[FieldNames.XMI_ID]
                 class_name = class_node[FieldNames.NAME]
-                # Create ClassModel Object and add to dict
-                return_classes[class_id] = ClassModel(class_name, )
             except Exception as e:
                 print(f'EXCEPTION parsing class: {e}')
                 sys.exit()
+            try:
+                operation_nodes = [node for node in class_node.children if
+                                   node.name == FieldNames.OWNED_OPERATION]
+            except Exception as e:
+                print(f'EXCEPTION getting operation nodes: {e}')
+                sys.exit()
+            for operation_node in operation_nodes:
+                try:
+                    operation_name = operation_node[FieldNames.NAME]
+                    print(f'{operation_name}')
+                except Exception as e:
+                    print(f'EXCEPTION parsing operation: {e}')
+                    sys.exit()
+                try:
+                    parameter_nodes = [node for node in operation_node.children if
+                                       node.name == FieldNames.OWNED_PARAMETER]
+                except Exception as e:
+                    print(f'EXCEPTION getting parameter nodes: {e}')
+                    sys.exit()
+                for parameter_node in parameter_nodes:
+                    try:
+                        parameter_name = parameter_node[FieldNames.NAME]
+                        print(f'{parameter_name}')
+                    except Exception as e:
+                        print(f'EXCEPTION parsing operation: {e}')
+                        sys.exit()
+                # Create ClassModel Object and add to dict
+                try:
+                    return_classes[class_id] = ClassModel(class_name, )
+                except Exception as e:
+                    print(f'EXCEPTION parsing operation: {e}')
+                    sys.exit()
         return return_classes
 
     def get_all_relationships(self):

@@ -1,6 +1,8 @@
 NAME = "name"
 TYPE = "type"
 OWNED_END = "ownedEnd"
+OWNED_OPERATION = "ownedOperation"
+OWNED_PARAMETER = "ownedParameter"
 UML_ASSOCIATION = "uml:Association"
 UML_CLASS = "uml:Class"
 XMI_ID = "xmi:id"
