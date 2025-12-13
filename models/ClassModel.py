@@ -2,6 +2,7 @@ from dataclasses import field
 from typing import Optional, List, Dict, Any
 
 from models import AttributeModel, OperationModel
+from models.VisibilityType import VisibilityType
 
 
 class ClassModel:
@@ -11,7 +12,7 @@ class ClassModel:
         package: Optional[str] = None,
         attributes: Optional[List["AttributeModel"]] = None,
         operations: Optional[List["OperationModel"]] = None,
-        visibility: "Visibility" = None,
+        visibility: VisibilityType = None,
         is_abstract: bool = False,
         super_classes: Optional[List[str]] = None,
         interfaces: Optional[List[str]] = None
@@ -20,7 +21,7 @@ class ClassModel:
         self.package = package
         self.attributes = attributes or []
         self.operations = operations or []
-        self.visibility = visibility or Visibility.PUBLIC
+        self.visibility = visibility or VisibilityType.PUBLIC
         self.is_abstract = is_abstract
         self.super_classes = super_classes or []
         self.interfaces = interfaces or []

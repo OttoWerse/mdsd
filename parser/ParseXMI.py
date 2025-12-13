@@ -1,3 +1,4 @@
+import argparse
 import sys
 from bs4 import BeautifulSoup
 from constants import FieldNames
@@ -28,6 +29,71 @@ class XmiParser:
         # TODO: Check if result is None or nah?
         return result
 
+    def parse_class_attributes(self, class_node):
+        class_attributes = {}
+        try:
+            attribute_nodes = [node for node in class_node.children if
+                               node.name == FieldNames.OWNED_ATTRIBUTE]
+        except Exception as e:
+            print(f'EXCEPTION getting attribute nodes: {e}')
+            sys.exit()
+        for attribute_node in attribute_nodes:
+            try:
+                attribute_name = attribute_node[FieldNames.NAME]  # TODO: handle no name
+                # TODO: create AttributeModel and add to ClassModel.attributes
+                print(f'{attribute_name}')
+
+            except Exception as e:
+                print(f'EXCEPTION parsing attribute: {e}')
+                sys.exit()
+
+    def parse_class_operations(self, class_node):
+        class_operations = {}
+        try:
+            operation_nodes = [node for node in class_node.children if
+                               node.name == FieldNames.OWNED_OPERATION]
+        except Exception as e:
+            print(f'EXCEPTION getting operation nodes: {e}')
+            sys.exit()
+        for operation_node in operation_nodes:
+            try:
+                operation_name = operation_node[FieldNames.NAME]  # TODO: handle no name
+                # TODO: create OperationModel and add to ClassModel.operations
+                print(f'{operation_name}')
+            except Exception as e:
+                print(f'EXCEPTION parsing operation: {e}')
+                sys.exit()
+            try:
+                parameter_nodes = [node for node in operation_node.children if
+                                   node.name == FieldNames.OWNED_PARAMETER]
+            except Exception as e:
+                print(f'EXCEPTION getting parameter nodes: {e}')
+                sys.exit()
+            for parameter_node in parameter_nodes:
+                try:
+                    parameter_name = parameter_node[FieldNames.NAME]  # TODO: handle no name
+                    # TODO: Check parameter type = "return" and add to OperationModel return type
+                    # TODO: create ParameterModel and add to OperationModel.parameters
+                    print(f'{parameter_name}')
+                except Exception as e:
+                    print(f'EXCEPTION parsing operation: {e}')
+                    sys.exit()
+
+    def parse_class(self, class_node):
+        try:
+            class_name = class_node[FieldNames.NAME]  # TODO: handle no name
+            class_attributes = self.parse_class_attributes(class_node)
+            class_operations = self.parse_class_operations(class_node)
+        except Exception as e:
+            print(f'EXCEPTION parsing class: {e}')
+            sys.exit()
+        # Create ClassModel Object and add to dict
+        try:
+            return ClassModel(class_name, )
+        except Exception as e:
+            print(f'EXCEPTION creating class model: {e}')
+            sys.exit()
+
     def get_all_classes(self):
         """Returns all classes in the parsers xml tree"""
         return_classes = {}
@@ -38,61 +104,9 @@ class XmiParser:
             print(f'EXCEPTION getting class nodes: {e}')
             sys.exit()
         for class_node in class_nodes:
-            try:
-                class_id = class_node[FieldNames.XMI_ID]
-                class_name = class_node[FieldNames.NAME]  # TODO: handle no name
-            except Exception as e:
-                print(f'EXCEPTION parsing class: {e}')
-                sys.exit()
-            try:
-                attribute_nodes = [node for node in class_node.children if
-                                   node.name == FieldNames.OWNED_ATTRIBUTE]
-            except Exception as e:
-                print(f'EXCEPTION getting attribute nodes: {e}')
-                sys.exit()
-            for attribute_node in attribute_nodes:
-                try:
-                    attribute_name = attribute_node[FieldNames.NAME]  # TODO: handle no name
-                    # TODO: create AttributeModel and add to ClassModel.attributes
-                    print(f'{attribute_name}')
-                except Exception as e:
-                    print(f'EXCEPTION parsing attribute: {e}')
-                    sys.exit()
-            try:
-                operation_nodes = [node for node in class_node.children if
-                                   node.name == FieldNames.OWNED_OPERATION]
-            except Exception as e:
-                print(f'EXCEPTION getting operation nodes: {e}')
-                sys.exit()
-            for operation_node in operation_nodes:
-                try:
-                    operation_name = operation_node[FieldNames.NAME]  # TODO: handle no name
-                    # TODO: create OperationModel and add to ClassModel.operations
-                    print(f'{operation_name}')
-                except Exception as e:
-                    print(f'EXCEPTION parsing operation: {e}')
-                    sys.exit()
-                try:
-                    parameter_nodes = [node for node in operation_node.children if
-                                       node.name == FieldNames.OWNED_PARAMETER]
-                except Exception as e:
-                    print(f'EXCEPTION getting parameter nodes: {e}')
-                    sys.exit()
-                for parameter_node in parameter_nodes:
-                    try:
-                        parameter_name = parameter_node[FieldNames.NAME]  # TODO: handle no name
-                        # TODO: Check parameter type = "return" and add to OperationModel return type
-                        # TODO: create ParameterModel and add to OperationModel.parameters
-                        print(f'{parameter_name}')
-                    except Exception as e:
-                        print(f'EXCEPTION parsing operation: {e}')
-                        sys.exit()
-                # Create ClassModel Object and add to dict
-                try:
-                    return_classes[class_id] = ClassModel(class_name, )
-                except Exception as e:
-                    print(f'EXCEPTION parsing operation: {e}')
-                    sys.exit()
+            class_id = class_node[FieldNames.XMI_ID]  # TODO: try-except around this?
+            class_model = self.parse_class(class_node)
+            return_classes[class_id] = class_model
         return return_classes
 
     def get_all_relationships(self):
@@ -141,9 +155,17 @@ class XmiParser:
 
 if __name__ == '__main__':
     """Main function"""
-    parser = XmiParser(r'H:\Users\Otto\Documents\VPProjects\facade_mikrowelle.xmi')
-    relationships = parser.get_all_relationships()
-    classes = parser.get_all_classes()
+    argument_parser = argparse.ArgumentParser("ParseXMI")
+    argument_parser.add_argument("--xmi_path",
+                                 type=str,
+                                 help="Speicherpfad der XMI Datei",
+                                 nargs='?',
+                                 const=0, )
+    args = argument_parser.parse_args()
+    xmi_parser = XmiParser(args.xmi_path)
+
+    relationships = xmi_parser.get_all_relationships()
+    classes = xmi_parser.get_all_classes()
 
     for relationship in relationships.values():
         print(f'{relationship.name}: {relationship.source} -> {relationship.target}')
