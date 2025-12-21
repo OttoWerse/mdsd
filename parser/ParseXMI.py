@@ -2,7 +2,10 @@ import argparse
 import sys
 from bs4 import BeautifulSoup
 from constants import FieldNames
+from models.AttributeModel import AttributeModel
 from models.ClassModel import ClassModel
+from models.OperationModel import OperationModel
+from models.ParameterModel import ParameterModel
 from models.RelationshipModel import RelationshipModel
 
 
@@ -30,7 +33,7 @@ class XmiParser:
         return result
 
     def parse_class_attributes(self, class_node):
-        class_attributes = {}
+        attributes = {}
         try:
             attribute_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_ATTRIBUTE]
@@ -40,15 +43,16 @@ class XmiParser:
         for attribute_node in attribute_nodes:
             try:
                 attribute_name = attribute_node[FieldNames.NAME]  # TODO: handle no name
-                # TODO: create AttributeModel and add to ClassModel.attributes
-                print(f'{attribute_name}')
-
+                attribute_id = attribute_node[FieldNames.XMI_ID]  # TODO: try-except around this?
             except Exception as e:
                 print(f'EXCEPTION parsing attribute: {e}')
                 sys.exit()
+            attribute = AttributeModel(name=attribute_name)
+            print(f'{attribute}')
+            attributes[attribute_id] = attribute
 
     def parse_class_operations(self, class_node):
-        class_operations = {}
+        operations = {}
         try:
             operation_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_OPERATION]
@@ -58,8 +62,7 @@ class XmiParser:
         for operation_node in operation_nodes:
             try:
                 operation_name = operation_node[FieldNames.NAME]  # TODO: handle no name
-                # TODO: create OperationModel and add to ClassModel.operations
-                print(f'{operation_name}')
+                operation_id = operation_node[FieldNames.XMI_ID]
             except Exception as e:
                 print(f'EXCEPTION parsing operation: {e}')
                 sys.exit()
@@ -73,11 +76,14 @@ class XmiParser:
                 try:
                     parameter_name = parameter_node[FieldNames.NAME]  # TODO: handle no name
                     # TODO: Check parameter type = "return" and add to OperationModel return type
-                    # TODO: create ParameterModel and add to OperationModel.parameters
-                    print(f'{parameter_name}')
                 except Exception as e:
-                    print(f'EXCEPTION parsing operation: {e}')
+                    print(f'EXCEPTION parsing parameter: {e}')
                     sys.exit()
+                parameter = ParameterModel(name=parameter_name)
+                print(f'{parameter}')
+            operation = OperationModel(name=operation_name)
+            print(f'{operation}')
+            operations[operation_id] = operation
 
     def parse_class(self, class_node):
         try:
