@@ -7,3 +7,11 @@ Sie hat die folgenden $attribute_count Attrbitue:
 $attribute_list
 Sie hat die folgenden $method_count Methoden: 
 $method_list""")
+TYPE_DESCRIPTION = Template("""Typ: $type_name""")
+VISIBILITY_DESCRIPTION = Template("""Sichtbarkeit: $visibility""")
+ATTRIBUTE_DESCRIPTION = Template("""$attribute_visibility $attribute_name : $attribute_type""")
+FIELD_DESCRIPTION = Template("""$field_visibility $field_name : $field_type""")
+PARAMETER_DESCRIPTION = Template("""$parameter_type $parameter_name""")
+METHOD_DESCRIPTION = Template("""$method_visibility $method_name($parameters_list) : $return_type""")
+OPERATION_DESCRIPTION = Template("""$visibility $operation_name($parameters_list) : $return_type""")
+RELATIONSHIP_DESCRIPTION = Template("""Beziehung: $source --[$relation_type]--> $target""")
