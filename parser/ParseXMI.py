@@ -149,15 +149,16 @@ class XmiParser:
             try:
                 relationship_id = relationship_node[FieldNames.XMI_ID]
                 # Get name of relationship from XMI file or set it based on relationship type
-                relationship_name = ''
                 try:
                     relationship_name = relationship_node[FieldNames.NAME]
                 except Exception as e:
                     try:
                         match relationship_node[FieldNames.XMI_TYPE]:
                             # TODO: Add cases for known relationships, use constants and translate later in renderGerman
+                            case 'uml:Association':
+                                relationship_name = Placeholders.ASSOCIATION_NAME
                             case _:
-                                relationship_name = relationship_node[FieldNames.XMI_TYPE]
+                                relationship_name = Placeholders.EMPTY_RELATIONSHIP_NAME
                     except Exception as e:
                         logger.exception(f'ERROR: no relationship name or type found for {relationship_node}')
                         sys.exit()
