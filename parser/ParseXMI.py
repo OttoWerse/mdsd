@@ -215,18 +215,18 @@ if __name__ == '__main__':
     classes = xmi_parser.get_all_classes()
     print('Klassen:')
     for class_object in classes.values():
-        print(f' {class_object.name}')
+        print(f' -{class_object.name}')
         print(f'  Attribute:')
         for attribute_object in class_object.attributes.values():
-            print(f'   {attribute_object.name}')
+            print(f'   -{attribute_object.name}')
         print(f'  Methoden:')
         for operation_object in class_object.operations.values():
-            print(f'   {operation_object.name}')
-            print(f'   Parameter:')
+            print(f'   -{operation_object.name}')
+            print(f'    Parameter:')
             for parameter_object in operation_object.parameters.values():
-                print(f'    ({parameter_object.direction}) {parameter_object.name} : {parameter_object.type}')
+                print(f'     -({parameter_object.direction}) {parameter_object.name} : {parameter_object.type}')
     print('Beziehungen:')
     for relationship_object in relationships.values():
-        print(f'{classes[relationship_object.source].name} '
+        print(f' -{classes[relationship_object.source].name} '
               f'--({relationship_object.name})-> '
               f'{classes[relationship_object.target].name}')
