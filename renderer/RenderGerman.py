@@ -1,18 +1,20 @@
 from models.ClassModel import ClassModel
-from templates.German import CLASS_DESCRIPTION
+from templates.German import CLASS_DESCRIPTION, RELATIONSHIP_DESCRIPTION, PARAMETER_DESCRIPTION, OPERATION_DESCRIPTION, \
+    ATTRIBUTE_DESCRIPTION
 
 
 class GermanRenderer:
-    def __init__(self):
-        pass
+    def __init__(self, classes, relationships):
+        self.classes = classes
+        self.relationships = relationships
 
-    def render_class_diagram(self, classes, relationships):
+    def render_class_diagram(self):
         return_text = 'Klassen: \n'
-        for class_object in classes.values():
-            return_text += self.render_class(class_object)
+        for class_object in self.classes.values():
+            return_text += f'{self.render_class(class_object)} \n'
         return_text += 'Beziehungen: \n'
-        for relationship_object in relationships.values():
-            return_text += self.render_relationship(relationship_object)
+        for relationship_object in self.relationships.values():
+            return_text += f'{self.render_relationship(relationship_object)} \n'
         return return_text
 
     def render_class(self, class_object):
@@ -35,30 +37,44 @@ class GermanRenderer:
     def render_attribute_list(self, attributes):
         return_text = ''
         for attribute_object in attributes:
+            attribute_visibility = attribute_object.visibility
             attribute_name = attribute_object.name
-            # TODO: Use Template to create formatted text and append to return_text
-        return return_text
+            attribute_type = attribute_object.type
+            # Use Template to create formatted text and append to return_text
+            return_text += f'{ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
+                                                               attribute_name=attribute_name,
+                                                               attribute_type=attribute_type)} \n'
+        return return_text[:-1]  # Remove trailing "\n" gracefully
 
     def render_operation_list(self, operations):
         return_text = ''
         for operation_object in operations:
             operation_name = operation_object.name
+            operation_visibility = operation_object.visibility
             parameter_count = len(operation_object.parameters)
-            parameter_list = self.renbder_parameter_list(operation_object.parameters.values())
-            # TODO: Use Template to create formatted text and append to return_text
-        return return_text
+            parameter_list = self.render_parameter_list(operation_object.parameters.values())
+            # Use Template to create formatted text and append to return_text
+            return_text += f'{OPERATION_DESCRIPTION.substitute(visibility=operation_visibility,
+                                                               operation_name=operation_name,
+                                                               parameters_list=parameter_list,
+                                                               return_type='TODO', )} \n'
+        return return_text[:-1]  # Remove trailing "\n" gracefully
 
-    def renbder_parameter_list(self, parameters):
+    def render_parameter_list(self, parameters):
         return_text = ''
         for parameter_object in parameters:
             parameter_direction = parameter_object.direction
             parameter_name = parameter_object.name
             parameter_type = parameter_object.type
-            # TODO: Use Template to create formatted text and append to return_text
-        return return_text
+            return_text += f'{PARAMETER_DESCRIPTION.substitute(parameter_type=parameter_type,
+                                                               parameter_name=parameter_name)}, '
+        return return_text[:-2]  # Remove trailing ", " gracefully
 
     def render_relationship(self, relationship_object):
         return_text = ''
         relationship_name = relationship_object.name
-        # TODO: Use Template to create formatted text into return_text
+        # Use Template to create formatted text into return_text
+        return_text = RELATIONSHIP_DESCRIPTION.substitute(source=self.classes[relationship_object.source].name,
+                                                          relation_type=relationship_object.name,
+                                                          target=self.classes[relationship_object.target].name, )
         return return_text
