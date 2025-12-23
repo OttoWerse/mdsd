@@ -39,75 +39,94 @@ class XmiParser:
         # TODO: Check if result is None or nah?
         return result
 
-    def parse_class_attributes(self, class_node):
-        attributes = {}
+    def parse_attribute(self, attribute_node):
         try:
+            try:
+                attribute_name = attribute_node[FieldNames.NAME]
+            except Exception as e:  # handle no name
+                attribute_name = Placeholders.EMPTY_ATTRIBUTE_NAME
+        except Exception as e:
+            logger.exception(f'EXCEPTION parsing attribute: {e}')
+            sys.exit()
+        return AttributeModel(name=attribute_name)
+
+    def parse_class_attributes(self, class_node):
+        try:
+            attributes = {}
             attribute_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_ATTRIBUTE]
         except Exception as e:
             logger.exception(f'EXCEPTION getting attribute nodes: {e}')
             sys.exit()
         for attribute_node in attribute_nodes:
-            try:
-                try:
-                    attribute_name = attribute_node[FieldNames.NAME]
-                # handle no name
-                except Exception as e:
-                    attribute_name = Placeholders.EMPTY_ATTRIBUTE_NAME
-                attribute_id = attribute_node[FieldNames.XMI_ID]  # TODO: try-except around this?
-            except Exception as e:
-                logger.exception(f'EXCEPTION parsing attribute: {e}')
-                sys.exit()
-            attribute = AttributeModel(name=attribute_name)
+            attribute_id = attribute_node[FieldNames.XMI_ID]
+            attribute = self.parse_attribute(attribute_node)
             attributes[attribute_id] = attribute
+        return attributes
+
+    def parse_parameter(self, parameter_node):
+        try:
+            try:
+                parameter_name = parameter_node[FieldNames.NAME]
+            except Exception as e:  # handle no name
+                parameter_name = Placeholders.EMPTY_PARAMETER_NAME
+            # TODO: Check parameter type = "return" and add to OperationModel return type
+        except Exception as e:
+            logger.exception(f'EXCEPTION parsing parameter: {e}')
+            sys.exit()
+        return ParameterModel(name=parameter_name)
+
+    def parse_operation(self, operation_node):
+        try:
+            try:
+                operation_name = operation_node[FieldNames.NAME]
+            except Exception as e:  # handle no name
+                operation_name = Placeholders.EMPTY_OPERATION_NAME
+        except Exception as e:
+            logger.exception(f'EXCEPTION parsing operation: {e}')
+            sys.exit()
+        try:
+            parameters = {}
+            parameter_nodes = [node for node in operation_node.children if
+                               node.name == FieldNames.OWNED_PARAMETER]
+        except Exception as e:
+            logger.exception(f'EXCEPTION getting parameter nodes: {e}')
+            sys.exit()
+        for parameter_node in parameter_nodes:
+            parameter_id = parameter_node[FieldNames.XMI_ID]
+            parameter = self.parse_parameter(parameter_node)
+            parameters[parameter_id] = parameter
+        return OperationModel(name=operation_name,
+                              parameters=parameters, )
 
     def parse_class_operations(self, class_node):
-        operations = {}
         try:
+            operations = {}
             operation_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_OPERATION]
         except Exception as e:
             logger.exception(f'EXCEPTION getting operation nodes: {e}')
             sys.exit()
         for operation_node in operation_nodes:
-            try:
-                try:
-                    operation_name = operation_node[FieldNames.NAME]
-                # handle no name
-                except Exception as e:
-                    operation_name = Placeholders.EMPTY_OPERATION_NAME
-                operation_id = operation_node[FieldNames.XMI_ID]
-            except Exception as e:
-                logger.exception(f'EXCEPTION parsing operation: {e}')
-                sys.exit()
-            try:
-                parameter_nodes = [node for node in operation_node.children if
-                                   node.name == FieldNames.OWNED_PARAMETER]
-            except Exception as e:
-                logger.exception(f'EXCEPTION getting parameter nodes: {e}')
-                sys.exit()
-            for parameter_node in parameter_nodes:
-                try:
-                    try:
-                        parameter_name = parameter_node[FieldNames.NAME]
-                    # handle no name
-                    except Exception as e:
-                        parameter_name = Placeholders.EMPTY_PARAMETER_NAME
-                    # TODO: Check parameter type = "return" and add to OperationModel return type
-                except Exception as e:
-                    logger.exception(f'EXCEPTION parsing parameter: {e}')
-                    sys.exit()
-                parameter = ParameterModel(name=parameter_name)
-            operation = OperationModel(name=operation_name)
+            operation_id = operation_node[FieldNames.XMI_ID]
+            operation = self.parse_operation(operation_node)
             operations[operation_id] = operation
+        return operations
 
     def parse_class(self, class_node):
         try:
             try:
                 class_name = class_node[FieldNames.NAME]
-            # handle no name
-            except Exception as e:
+            except Exception as e:  # handle no name
                 class_name = Placeholders.EMPTY_CLASS_NAME
+            # TODO: Add these fields properly
+            #  class_package = class_node[FieldNames.PACKAGE]
+            #  class_visibility = class_node[FieldNames.VISIBILITY]
+            #  class_is_abstract = class_node[FieldNames.ABSTRACT]
+            # Parse children nodes
+            # TODO: how exactly are these stored im XMI?
+            #  class_supers =
+            #  class_interfaces =
             class_attributes = self.parse_class_attributes(class_node)
             class_operations = self.parse_class_operations(class_node)
         except Exception as e:
@@ -115,7 +134,9 @@ class XmiParser:
             sys.exit()
         # Create ClassModel Object and add to dict
         try:
-            return ClassModel(class_name, )
+            return ClassModel(name=class_name,
+                              attributes=class_attributes,
+                              operations=class_operations, )
         except Exception as e:
             logger.exception(f'EXCEPTION creating class model: {e}')
             sys.exit()
@@ -130,7 +151,7 @@ class XmiParser:
             logger.exception(f'EXCEPTION getting class nodes: {e}')
             sys.exit()
         for class_node in class_nodes:
-            class_id = class_node[FieldNames.XMI_ID]  # TODO: try-except around this?
+            class_id = class_node[FieldNames.XMI_ID]
             class_model = self.parse_class(class_node)
             return_classes[class_id] = class_model
         return return_classes
@@ -148,20 +169,17 @@ class XmiParser:
             # Get id of relationship node
             try:
                 relationship_id = relationship_node[FieldNames.XMI_ID]
+                relationship_type = relationship_node[FieldNames.XMI_TYPE]
                 # Get name of relationship from XMI file or set it based on relationship type
                 try:
                     relationship_name = relationship_node[FieldNames.NAME]
                 except Exception as e:
-                    try:
-                        match relationship_node[FieldNames.XMI_TYPE]:
-                            # TODO: Add cases for known relationships, use constants and translate later in renderGerman
-                            case 'uml:Association':
-                                relationship_name = Placeholders.ASSOCIATION_NAME
-                            case _:
-                                relationship_name = Placeholders.EMPTY_RELATIONSHIP_NAME
-                    except Exception as e:
-                        logger.exception(f'ERROR: no relationship name or type found for {relationship_node}')
-                        sys.exit()
+                    match relationship_type:
+                        # TODO: Add cases for known relationships, use constants and translate later in renderGerman
+                        case 'uml:Association':
+                            relationship_name = Placeholders.ASSOCIATION_NAME
+                        case _:
+                            relationship_name = Placeholders.EMPTY_RELATIONSHIP_NAME
                 # Get ends of relationship from XMI
                 ends = [child[FieldNames.TYPE] for child in relationship_node.children if
                         child.name == FieldNames.OWNED_END]
@@ -195,7 +213,20 @@ if __name__ == '__main__':
 
     relationships = xmi_parser.get_all_relationships()
     classes = xmi_parser.get_all_classes()
-
-    for relationship in relationships.values():
-        print(f'{relationship.name}: {relationship.source} -> {relationship.target}')
-        print(f'{relationship.name}: {classes[relationship.source].name} -> {classes[relationship.target].name}')
+    print('Klassen:')
+    for class_object in classes.values():
+        print(f' {class_object.name}')
+        print(f'  Attribute:')
+        for attribute_object in class_object.attributes.values():
+            print(f'   {attribute_object.name}')
+        print(f'  Methoden:')
+        for operation_object in class_object.operations.values():
+            print(f'   {operation_object.name}')
+            print(f'   Parameter:')
+            for parameter_object in operation_object.parameters.values():
+                print(f'    {parameter_object.direction} {parameter_object.name} ({parameter_object.type})')
+    print('Beziehungen:')
+    for relationship_object in relationships.values():
+        print(f'{classes[relationship_object.source].name} '
+              f'--({relationship_object.name})-> '
+              f'{classes[relationship_object.target].name}')

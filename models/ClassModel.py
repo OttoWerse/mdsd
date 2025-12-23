@@ -10,8 +10,8 @@ class ClassModel:
         self,
         name: Optional[str] = None,
         package: Optional[str] = None,
-        attributes: Optional[List["AttributeModel"]] = None,
-        operations: Optional[List["OperationModel"]] = None,
+        attributes: Optional[Dict[str, AttributeModel]] = None,
+        operations: Optional[Dict[str, OperationModel]] = None,
         visibility: VisibilityType = None,
         is_abstract: bool = False,
         super_classes: Optional[List[str]] = None,
@@ -19,8 +19,8 @@ class ClassModel:
     ):
         self.name = name or "<class>"
         self.package = package
-        self.attributes = attributes or []
-        self.operations = operations or []
+        self.attributes = attributes or {}
+        self.operations = operations or {}
         self.visibility = visibility or VisibilityType.PUBLIC
         self.is_abstract = is_abstract
         self.super_classes = super_classes or []

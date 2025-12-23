@@ -12929,7 +12929,15 @@
 				<businessModel xmi:value="false"/>
 				<qualityScore value="-1"/>
 			</xmi:Extension>
-			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="leistung" type="int_id" visibility="private" xmi:id="TefnwNmAUBQAAg.G" xmi:type="uml:Property">
+			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="hersteller" visibility="private" xmi:id="yIO50tmAUBQAAgiq" xmi:type="uml:Property">
+				<xmi:Extension extender="Visual Paradigm">
+					<attribute/>
+					<isAbstract xmi:value="false"/>
+					<isVisble xmi:value="true"/>
+					<qualityScore value="-1"/>
+				</xmi:Extension>
+			</ownedAttribute>
+			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="modell" visibility="private" xmi:id="7Fe50tmAUBQAAgis" xmi:type="uml:Property">
 				<xmi:Extension extender="Visual Paradigm">
 					<attribute/>
 					<isAbstract xmi:value="false"/>
@@ -13051,12 +13059,24 @@
 			</xmi:Extension>
 			<ownedOperation isAbstract="false" isLeaf="false" isOrdered="false" isQuery="false" isStatic="false" isUnique="true" name="bestrahlen" visibility="public" xmi:id="jLF5z1mAUBQAAhYl" xmi:type="uml:Operation">
 				<ownedParameter kind="return" xmi:id="jLF5z1mAUBQAAhYl_return" xmi:type="uml:Parameter"/>
+				<ownedParameter kind="inout" name="leistung" type="int_id" xmi:id="dztZ0tmAUBQAAgeL" xmi:type="uml:Parameter">
+					<defaultValue value="900" xmi:id="dztZ0tmAUBQAAgeL_defaultValue" xmi:type="uml:LiteralString"/>
+					<xmi:Extension extender="Visual Paradigm">
+						<qualityScore value="-1"/>
+					</xmi:Extension>
+				</ownedParameter>
+				<ownedParameter kind="inout" name="dauer" type="float_id" xmi:id="3mLZ0tmAUBQAAgg." xmi:type="uml:Parameter">
+					<defaultValue value="0.5" xmi:id="3mLZ0tmAUBQAAgg._defaultValue" xmi:type="uml:LiteralString"/>
+					<xmi:Extension extender="Visual Paradigm">
+						<qualityScore value="-1"/>
+					</xmi:Extension>
+				</ownedParameter>
 				<xmi:Extension extender="Visual Paradigm">
 					<returnTypeDocumentation xmi:value=""/>
 					<properties>
 						<property name="pmAuthor" type="string" value="Otto"/>
 						<property name="pmCreateDateTime" type="string" value="1765023845681"/>
-						<property name="pmLastModified" type="string" value="1765023898182"/>
+						<property name="pmLastModified" type="string" value="1766500069712"/>
 						<property name="userIDLastNumericValue" type="int" value="0"/>
 						<property name="backlogActivityId" type="int" value="0"/>
 						<property name="static" type="boolean" value="false"/>
@@ -13078,12 +13098,24 @@
 			</xmi:Extension>
 			<ownedOperation isAbstract="false" isLeaf="false" isOrdered="false" isQuery="false" isStatic="false" isUnique="true" name="backen" visibility="public" xmi:id="WfV5z1mAUBQAAhYz" xmi:type="uml:Operation">
 				<ownedParameter kind="return" xmi:id="WfV5z1mAUBQAAhYz_return" xmi:type="uml:Parameter"/>
+				<ownedParameter kind="inout" name="temperatur" type="int_id" xmi:id="Blw50tmAUBQAAghr" xmi:type="uml:Parameter">
+					<defaultValue value="180" xmi:id="Blw50tmAUBQAAghr_defaultValue" xmi:type="uml:LiteralString"/>
+					<xmi:Extension extender="Visual Paradigm">
+						<qualityScore value="-1"/>
+					</xmi:Extension>
+				</ownedParameter>
+				<ownedParameter kind="inout" name="dauer" type="float_id" xmi:id="p4Y50tmAUBQAAght" xmi:type="uml:Parameter">
+					<defaultValue value="10" xmi:id="p4Y50tmAUBQAAght_defaultValue" xmi:type="uml:LiteralString"/>
+					<xmi:Extension extender="Visual Paradigm">
+						<qualityScore value="-1"/>
+					</xmi:Extension>
+				</ownedParameter>
 				<xmi:Extension extender="Visual Paradigm">
 					<returnTypeDocumentation xmi:value=""/>
 					<properties>
 						<property name="pmAuthor" type="string" value="Otto"/>
 						<property name="pmCreateDateTime" type="string" value="1765023854490"/>
-						<property name="pmLastModified" type="string" value="1765023898183"/>
+						<property name="pmLastModified" type="string" value="1766500136545"/>
 						<property name="userIDLastNumericValue" type="int" value="0"/>
 						<property name="backlogActivityId" type="int" value="0"/>
 						<property name="static" type="boolean" value="false"/>
@@ -13105,12 +13137,18 @@
 			</xmi:Extension>
 			<ownedOperation isAbstract="false" isLeaf="false" isOrdered="false" isQuery="false" isStatic="false" isUnique="true" name="grillen" visibility="public" xmi:id="w0t5z1mAUBQAAhY." xmi:type="uml:Operation">
 				<ownedParameter kind="return" xmi:id="w0t5z1mAUBQAAhY._return" xmi:type="uml:Parameter"/>
+				<ownedParameter kind="inout" name="dauer" type="float_id" xmi:id="8vM50tmAUBQAAgh." xmi:type="uml:Parameter">
+					<defaultValue value="5.0" xmi:id="8vM50tmAUBQAAgh._defaultValue" xmi:type="uml:LiteralString"/>
+					<xmi:Extension extender="Visual Paradigm">
+						<qualityScore value="-1"/>
+					</xmi:Extension>
+				</ownedParameter>
 				<xmi:Extension extender="Visual Paradigm">
 					<returnTypeDocumentation xmi:value=""/>
 					<properties>
 						<property name="pmAuthor" type="string" value="Otto"/>
 						<property name="pmCreateDateTime" type="string" value="1765023863491"/>
-						<property name="pmLastModified" type="string" value="1765023898182"/>
+						<property name="pmLastModified" type="string" value="1766500162807"/>
 						<property name="userIDLastNumericValue" type="int" value="0"/>
 						<property name="backlogActivityId" type="int" value="0"/>
 						<property name="static" type="boolean" value="false"/>
@@ -13356,7 +13394,7 @@
 				<afilterByViewpointLegend value="true"/>
 				<apmAuthor value="Otto"/>
 				<apmCreateDateTime value="1765022552952"/>
-				<apmLastModified value="1765297099934"/>
+				<apmLastModified value="1766500210871"/>
 				<ateamworkCreateDateTime value="0"/>
 				<ashowShapeLegend value="false"/>
 				<ashowConnectorLegend value="false"/>
@@ -13431,9 +13469,9 @@
 			</properties>
 		</xmi:Extension>
 		<uml:Diagram.element>
-			<uml:DiagramElement geometry="963,521,80,40" preferredShapeType="Class" subject="FE1pz1mAUBQAAhUX" xmi:id="FE1pz1mAUBQAAhUW">
+			<uml:DiagramElement geometry="788,386,137,40" preferredShapeType="Class" subject="FE1pz1mAUBQAAhUX" xmi:id="FE1pz1mAUBQAAhUW">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="0,0,80,15"/>
+					<captionBounds value="0,0,138,16"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13510,9 +13548,9 @@
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 				<CompartmentFont value="none"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement geometry="781,521,80,40" preferredShapeType="Class" subject="9Tlpz1mAUBQAAhUO" xmi:id="9Tlpz1mAUBQAAhUN">
+			<uml:DiagramElement geometry="708,445,251,40" preferredShapeType="Class" subject="9Tlpz1mAUBQAAhUO" xmi:id="9Tlpz1mAUBQAAhUN">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="0,0,80,15"/>
+					<captionBounds value="0,0,252,16"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13589,9 +13627,9 @@
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 				<CompartmentFont value="none"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement geometry="598,521,80,40" preferredShapeType="Class" subject="115pz1mAUBQAAhUC" xmi:id="V15pz1mAUBQAAhUB">
+			<uml:DiagramElement geometry="640,504,255,47" preferredShapeType="Class" subject="115pz1mAUBQAAhUC" xmi:id="V15pz1mAUBQAAhUB">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="0,0,80,15"/>
+					<captionBounds value="0,0,255,16"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13668,9 +13706,9 @@
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 				<CompartmentFont value="none"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement geometry="335,240,80,40" preferredShapeType="Class" subject="qDwpz1mAUBQAAhTJ" xmi:id="qDwpz1mAUBQAAhTI">
+			<uml:DiagramElement geometry="416,240,80,40" preferredShapeType="Class" subject="qDwpz1mAUBQAAhTJ" xmi:id="qDwpz1mAUBQAAhTI">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="0,0,80,15"/>
+					<captionBounds value="0,0,80,16"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13747,9 +13785,9 @@
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 				<CompartmentFont value="none"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement geometry="640,193,362,135" preferredShapeType="Class" subject="ldtRz1mAUBQAAhS." xmi:id="ldtRz1mAUBQAAhS9">
+			<uml:DiagramElement geometry="640,193,309,135" preferredShapeType="Class" subject="ldtRz1mAUBQAAhS." xmi:id="ldtRz1mAUBQAAhS9">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="0,0,362,15"/>
+					<captionBounds value="0,0,310,16"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13826,9 +13864,9 @@
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 				<CompartmentFont value="none"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement fromDiagramElement="qDwpz1mAUBQAAhTI" geometry="416,259;639,259;" preferredShapeType="Association" subject="DlcZz1mAUBQAAhVk" toDiagramElement="ldtRz1mAUBQAAhS9" xmi:id="zlcZz1mAUBQAAhVp">
+			<uml:DiagramElement fromDiagramElement="qDwpz1mAUBQAAhTI" geometry="497,259;638,259;" preferredShapeType="Association" subject="DlcZz1mAUBQAAhVk" toDiagramElement="ldtRz1mAUBQAAhS9" xmi:id="zlcZz1mAUBQAAhVp">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="483,242,89,16"/>
+					<captionBounds value="523,242,89,17"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13898,9 +13936,9 @@
 				<elementFont bold="false" color="Cr:0,0,0,255" italic="false" name="Dialog" size="11" style="0"/>
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="640,329;640,520;" preferredShapeType="Association" subject="kDbZz1mAUBQAAhXf" toDiagramElement="V15pz1mAUBQAAhUB" xmi:id="MDbZz1mAUBQAAhXk">
+			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="681,328;681,504;" preferredShapeType="Association" subject="kDbZz1mAUBQAAhXf" toDiagramElement="V15pz1mAUBQAAhUB" xmi:id="MDbZz1mAUBQAAhXk">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="639,412,20,0"/>
+					<captionBounds value="680,404,20,0"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -13970,9 +14008,9 @@
 				<elementFont bold="false" color="Cr:0,0,0,255" italic="false" name="Dialog" size="11" style="0"/>
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="835,329;835,520;" preferredShapeType="Association" subject="Oa7Zz1mAUBQAAhXn" toDiagramElement="9Tlpz1mAUBQAAhUN" xmi:id="ea7Zz1mAUBQAAhXs">
+			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="761,328;761,444;" preferredShapeType="Association" subject="Oa7Zz1mAUBQAAhXn" toDiagramElement="9Tlpz1mAUBQAAhUN" xmi:id="ea7Zz1mAUBQAAhXs">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="836,424,20,0"/>
+					<captionBounds value="762,386,20,0"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>
@@ -14042,9 +14080,9 @@
 				<elementFont bold="false" color="Cr:0,0,0,255" italic="false" name="Dialog" size="11" style="0"/>
 				<elementLine color="Cr:0,0,0,255" style="1" transparency="0" weight="1.0"/>
 			</uml:DiagramElement>
-			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="1002,329;1002,520;" preferredShapeType="Association" subject="5H7Zz1mAUBQAAhXv" toDiagramElement="FE1pz1mAUBQAAhUW" xmi:id="VH7Zz1mAUBQAAhX0">
+			<uml:DiagramElement fromDiagramElement="ldtRz1mAUBQAAhS9" geometry="827,328;827,385;" preferredShapeType="Association" subject="5H7Zz1mAUBQAAhXv" toDiagramElement="FE1pz1mAUBQAAhUW" xmi:id="VH7Zz1mAUBQAAhX0">
 				<xmi:Extension extender="Visual Paradigm">
-					<captionBounds value="1001,420,20,0"/>
+					<captionBounds value="826,355,20,0"/>
 					<captionInternalWidth value="-2147483648"/>
 					<captionInternalHeight value="-2147483648"/>
 					<captionVisible value="true"/>

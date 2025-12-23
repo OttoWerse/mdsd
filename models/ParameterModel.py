@@ -1,17 +1,20 @@
 from typing import Optional, Any, Dict
 from models import TypeModel
 
+
 class ParameterModel:
     def __init__(
-        self,
-        name: str,
-        type: Optional[TypeModel] = None,
-        default: Optional[str] = None,
+            self,
+            name: str,
+            type: Optional[TypeModel] = None,
+            default: Optional[str] = None,
+            direction: Optional[str] = None,
 
     ):
         self.name = name
         self.type = type
         self.default = default
+        self.direction = direction
 
     def to_dict(self) -> Dict[str, Any]:
         return {
