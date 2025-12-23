@@ -1,26 +1,33 @@
-import argparse
-import sys
-from bs4 import BeautifulSoup
-from constants import FieldNames
+from constants import FieldNames, Placeholders
 from models.AttributeModel import AttributeModel
 from models.ClassModel import ClassModel
 from models.OperationModel import OperationModel
 from models.ParameterModel import ParameterModel
 from models.RelationshipModel import RelationshipModel
+from bs4 import BeautifulSoup
+import argparse
+import sys
+import lxml
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class XmiParser:
     def __init__(self, file_path):
         try:
-            # TODO: Check if file is actually an XML file!
+            # Check if file is actually an XML file!
+            if not file_path.endswith(".xmi"):
+                logger.exception(f'ERROR not an XMI file: {file_path}')
+                sys.exit()
             file_object = open(file_path, 'r')
             file_content = file_object.read()
-            # TODO: Check for lxml installed! (required by BS4 but not correctly enforced)
+            # Check for lxml installed! (required by BS4 but not correctly enforced)
+            lxml.get_include()
             self.xmi_soup = BeautifulSoup(file_content, 'xml')
-            # TODO: Is this all we really need?
             self.nodes = self.find_all_elements_by_name('ownedMember')
         except Exception as e:
-            print(f'EXCEPTION initialising parser: {e}')
+            logger.exception(f'EXCEPTION initialising parser: {e}')
             sys.exit()
 
     def find_all_elements_by_name(self, name):
@@ -38,17 +45,20 @@ class XmiParser:
             attribute_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_ATTRIBUTE]
         except Exception as e:
-            print(f'EXCEPTION getting attribute nodes: {e}')
+            logger.exception(f'EXCEPTION getting attribute nodes: {e}')
             sys.exit()
         for attribute_node in attribute_nodes:
             try:
-                attribute_name = attribute_node[FieldNames.NAME]  # TODO: handle no name
+                try:
+                    attribute_name = attribute_node[FieldNames.NAME]
+                # handle no name
+                except Exception as e:
+                    attribute_name = Placeholders.EMPTY_ATTRIBUTE_NAME
                 attribute_id = attribute_node[FieldNames.XMI_ID]  # TODO: try-except around this?
             except Exception as e:
-                print(f'EXCEPTION parsing attribute: {e}')
+                logger.exception(f'EXCEPTION parsing attribute: {e}')
                 sys.exit()
             attribute = AttributeModel(name=attribute_name)
-            print(f'{attribute}')
             attributes[attribute_id] = attribute
 
     def parse_class_operations(self, class_node):
@@ -57,47 +67,57 @@ class XmiParser:
             operation_nodes = [node for node in class_node.children if
                                node.name == FieldNames.OWNED_OPERATION]
         except Exception as e:
-            print(f'EXCEPTION getting operation nodes: {e}')
+            logger.exception(f'EXCEPTION getting operation nodes: {e}')
             sys.exit()
         for operation_node in operation_nodes:
             try:
-                operation_name = operation_node[FieldNames.NAME]  # TODO: handle no name
+                try:
+                    operation_name = operation_node[FieldNames.NAME]
+                # handle no name
+                except Exception as e:
+                    operation_name = Placeholders.EMPTY_OPERATION_NAME
                 operation_id = operation_node[FieldNames.XMI_ID]
             except Exception as e:
-                print(f'EXCEPTION parsing operation: {e}')
+                logger.exception(f'EXCEPTION parsing operation: {e}')
                 sys.exit()
             try:
                 parameter_nodes = [node for node in operation_node.children if
                                    node.name == FieldNames.OWNED_PARAMETER]
             except Exception as e:
-                print(f'EXCEPTION getting parameter nodes: {e}')
+                logger.exception(f'EXCEPTION getting parameter nodes: {e}')
                 sys.exit()
             for parameter_node in parameter_nodes:
                 try:
-                    parameter_name = parameter_node[FieldNames.NAME]  # TODO: handle no name
+                    try:
+                        parameter_name = parameter_node[FieldNames.NAME]
+                    # handle no name
+                    except Exception as e:
+                        parameter_name = Placeholders.EMPTY_PARAMETER_NAME
                     # TODO: Check parameter type = "return" and add to OperationModel return type
                 except Exception as e:
-                    print(f'EXCEPTION parsing parameter: {e}')
+                    logger.exception(f'EXCEPTION parsing parameter: {e}')
                     sys.exit()
                 parameter = ParameterModel(name=parameter_name)
-                print(f'{parameter}')
             operation = OperationModel(name=operation_name)
-            print(f'{operation}')
             operations[operation_id] = operation
 
     def parse_class(self, class_node):
         try:
-            class_name = class_node[FieldNames.NAME]  # TODO: handle no name
+            try:
+                class_name = class_node[FieldNames.NAME]
+            # handle no name
+            except Exception as e:
+                class_name = Placeholders.EMPTY_CLASS_NAME
             class_attributes = self.parse_class_attributes(class_node)
             class_operations = self.parse_class_operations(class_node)
         except Exception as e:
-            print(f'EXCEPTION parsing class: {e}')
+            logger.exception(f'EXCEPTION parsing class: {e}')
             sys.exit()
         # Create ClassModel Object and add to dict
         try:
             return ClassModel(class_name, )
         except Exception as e:
-            print(f'EXCEPTION creating class model: {e}')
+            logger.exception(f'EXCEPTION creating class model: {e}')
             sys.exit()
 
     def get_all_classes(self):
@@ -107,7 +127,7 @@ class XmiParser:
             class_nodes = [node for node in self.nodes if
                            node[FieldNames.XMI_TYPE] == FieldNames.UML_CLASS]
         except Exception as e:
-            print(f'EXCEPTION getting class nodes: {e}')
+            logger.exception(f'EXCEPTION getting class nodes: {e}')
             sys.exit()
         for class_node in class_nodes:
             class_id = class_node[FieldNames.XMI_ID]  # TODO: try-except around this?
@@ -122,7 +142,7 @@ class XmiParser:
             relationship_nodes = [node for node in self.nodes if
                                   node[FieldNames.XMI_TYPE] == FieldNames.UML_ASSOCIATION]
         except Exception as e:
-            print(f'EXCEPTION getting relationship nodes: {e}')
+            logger.exception(f'EXCEPTION getting relationship nodes: {e}')
             sys.exit()
         for relationship_node in relationship_nodes:
             # Get id of relationship node
@@ -139,14 +159,14 @@ class XmiParser:
                             case _:
                                 relationship_name = relationship_node[FieldNames.XMI_TYPE]
                     except Exception as e:
-                        print(f'ERROR: no relationship name or type found for {relationship_node}')
+                        logger.exception(f'ERROR: no relationship name or type found for {relationship_node}')
                         sys.exit()
                 # Get ends of relationship from XMI
                 ends = [child[FieldNames.TYPE] for child in relationship_node.children if
                         child.name == FieldNames.OWNED_END]
                 # Check for exactly two ends
                 if len(ends) != 2:
-                    print(f'ERROR: more than two ends found for {relationship_name}')
+                    logger.exception(f'ERROR: more than two ends found for {relationship_name}')
                     sys.exit()
                 # Set left and right end of relationship
                 left_end = ends[0]
@@ -154,7 +174,7 @@ class XmiParser:
                 # Create RelationshipModel Object and add to dict
                 return_relationships[relationship_id] = RelationshipModel(relationship_name, left_end, right_end)
             except Exception as e:
-                print(f'EXCEPTION parsing relationship: {e}')
+                logger.exception(f'EXCEPTION parsing relationship: {e}')
                 sys.exit()
         return return_relationships
 
@@ -166,9 +186,11 @@ if __name__ == '__main__':
                                  type=str,
                                  help="Speicherpfad der XMI Datei",
                                  nargs='?',
-                                 const=0, )
+                                 const=0,
+                                 required=False, )
     args = argument_parser.parse_args()
-    xmi_parser = XmiParser(args.xmi_path)
+    xmi_file_path = args.xmi_path or r'examples/facade_mikrowelle.xmi'
+    xmi_parser = XmiParser(xmi_file_path)
 
     relationships = xmi_parser.get_all_relationships()
     classes = xmi_parser.get_all_classes()

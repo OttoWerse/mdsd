@@ -1,5 +1,6 @@
 from string import Template
 
+"""TEMPLATES"""
 ATTRIBUTE_DESCRIPTION = Template("""$attribute_visibility $attribute_name""")
 METHOD_DESCRIPTION = Template("""$method_visibility $method_name ($parameters_list)""")
 CLASS_DESCRIPTION = Template("""Eine Klasse mit dem Namen $class_name. 
