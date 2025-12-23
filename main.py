@@ -19,9 +19,7 @@ if __name__ == "__main__":
     relationships = xmi_parser.get_all_relationships()
     classes = xmi_parser.get_all_classes()
     # Render
-    output_string = ''
     german_renderer = GermanRenderer()
-    for class_object in classes.values():
-        output_string += german_renderer.render_class(class_object)
+    output_string = german_renderer.render_class_diagram(classes, relationships)
     print(output_string)
     print('END TEST')
