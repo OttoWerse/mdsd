@@ -224,7 +224,7 @@ if __name__ == '__main__':
             print(f'   {operation_object.name}')
             print(f'   Parameter:')
             for parameter_object in operation_object.parameters.values():
-                print(f'    {parameter_object.direction} {parameter_object.name} ({parameter_object.type})')
+                print(f'    ({parameter_object.direction}) {parameter_object.name} : {parameter_object.type}')
     print('Beziehungen:')
     for relationship_object in relationships.values():
         print(f'{classes[relationship_object.source].name} '
