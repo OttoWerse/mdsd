@@ -1,17 +1,22 @@
 from models.ClassModel import ClassModel
 from templates.German import CLASS_DESCRIPTION
 
-if __name__ == "__main__":
-    print('START TEST')
 
-    Class = ClassModel(name='Mikrowelle')
+class GermanRenderer:
+    def __init__(self):
+        pass
 
-    print(CLASS_DESCRIPTION.substitute(
-        class_name=Class.name,
-        attribute_count=0,
-        attribute_list='',
-        method_count=0,
-        method_list=''
-    ))
+    def render_class(self, Class):
+        name = Class.name
+        attribute_count = len(Class.attributes)
+        attribute_list = Class.attributes  # TODO: Format using loop and such BS
+        method_count = len(Class.operations)
+        method_list = Class.operations  # TODO: Format using loop and such BS
 
-    print('END TEST')
+        return CLASS_DESCRIPTION.substitute(
+            class_name=name,
+            attribute_count=attribute_count,
+            attribute_list=attribute_list,
+            method_count=method_count,
+            method_list=method_list,
+        )

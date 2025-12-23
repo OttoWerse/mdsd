@@ -8,7 +8,7 @@ class OperationModel:
         self,
         name: str,
         return_type: Optional[TypeModel] = None,
-        parameters: Optional[List[ParameterModel]] = None,
+        parameters: Optional[Dict[str, ParameterModel]] = None,
         visibility: Optional["Visibility"] = None,
         is_static: bool = False,
         is_abstract: bool = False

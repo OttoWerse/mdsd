@@ -5,7 +5,6 @@ from models.OperationModel import OperationModel
 from models.ParameterModel import ParameterModel
 from models.RelationshipModel import RelationshipModel
 from bs4 import BeautifulSoup
-import argparse
 import sys
 import lxml
 import logging
@@ -199,17 +198,8 @@ class XmiParser:
 
 
 if __name__ == '__main__':
-    """Main function"""
-    argument_parser = argparse.ArgumentParser("ParseXMI")
-    argument_parser.add_argument("--xmi_path",
-                                 type=str,
-                                 help="Speicherpfad der XMI Datei",
-                                 nargs='?',
-                                 const=0,
-                                 required=False, )
-    args = argument_parser.parse_args()
-    xmi_file_path = args.xmi_path or r'examples/facade_mikrowelle.xmi'
-    xmi_parser = XmiParser(xmi_file_path)
+    """Main function for testing class"""
+    xmi_parser = XmiParser(r'examples/facade_mikrowelle.xmi')
 
     relationships = xmi_parser.get_all_relationships()
     classes = xmi_parser.get_all_classes()
