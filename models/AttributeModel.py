@@ -1,5 +1,16 @@
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, TypedDict
 from models import TypeModel
+
+
+
+class AttributeDict(TypedDict):
+    name: str
+    type: Optional[Dict[str, object]]
+    visibility: Optional[str]
+    multiplicity: Optional[str]
+    default_value: Optional[str]
+    is_static: bool
+    is_final: bool
 
 
 class AttributeModel:
@@ -21,7 +32,7 @@ class AttributeModel:
         self.is_static = is_static
         self.is_final = is_final
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> AttributeDict:
         return {
             "name": self.name,
             "type": self.type.to_dict() if self.type else None,
@@ -33,7 +44,7 @@ class AttributeModel:
         }
 
     @staticmethod
-    def from_dict(d: Dict[str, Any]) -> "AttributeModel":
+    def from_dict(d: AttributeDict) -> "AttributeModel":
         t = d.get("type")
         return AttributeModel(
             name=d.get("name", "<attr>"),
@@ -41,6 +52,6 @@ class AttributeModel:
             visibility=Visibility.from_string(d.get("visibility")),
             multiplicity=d.get("multiplicity"),
             default_value=d.get("default_value"),
-            is_static=bool(d.get("is_static", False)),
-            is_final=bool(d.get("is_final", False)),
+            is_static=d.get("is_static", False),
+            is_final=d.get("is_final", False),
         )

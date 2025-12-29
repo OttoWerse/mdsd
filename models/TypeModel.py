@@ -1,11 +1,18 @@
-from dataclasses import field
-from typing import List, Optional, Dict, Any
+from typing import TypedDict, List, Optional, Dict
+
+
+class TypeDict(TypedDict):
+    name: str
+    package: Optional[str]
+    generic_parameters: List[Dict[str, object]]
+    is_primitive: bool
+
 
 class TypeModel:
     name: str
-    package: Optional[str] = None
-    generic_parameters: List["TypeModel"] = field(default_factory=list)
-    is_primitive: bool = False
+    package: Optional[str]
+    generic_parameters: List["TypeModel"]
+    is_primitive: bool
 
     def __init__(
         self,
@@ -25,19 +32,24 @@ class TypeModel:
             return f"{self.name}[{gens}]"
         return self.name
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> TypeDict:
         return {
             "name": self.name,
             "package": self.package,
-            "generic_parameters": [g.to_dict() for g in self.generic_parameters],
+            "generic_parameters": [
+                g.to_dict() for g in self.generic_parameters
+            ],
             "is_primitive": self.is_primitive,
         }
 
     @staticmethod
-    def from_dict(d: Dict[str, Any]) -> "TypeModel":
+    def from_dict(d: TypeDict) -> "TypeModel":
         return TypeModel(
             name=d.get("name", "<unknown>"),
             package=d.get("package"),
-            generic_parameters=[TypeModel.from_dict(g) for g in d.get("generic_parameters", [])],
+            generic_parameters=[
+                TypeModel.from_dict(g)
+                for g in d.get("generic_parameters", [])
+            ],
             is_primitive=d.get("is_primitive", False),
         )

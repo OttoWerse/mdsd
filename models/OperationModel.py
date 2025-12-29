@@ -1,7 +1,16 @@
-from dataclasses import field
-from typing import Optional, List, Any, Dict
+from typing import Optional, Dict, TypedDict
 
 from models import ParameterModel, TypeModel
+
+
+class OperationDict(TypedDict):
+    name: str
+    return_type: Optional[Dict[str, object]]
+    parameters: Dict[str, Dict[str, object]]
+    visibility: Optional[str]
+    is_static: bool
+    is_abstract: bool
+
 
 class OperationModel:
     def __init__(
@@ -9,13 +18,13 @@ class OperationModel:
         name: str,
         return_type: Optional[TypeModel] = None,
         parameters: Optional[Dict[str, ParameterModel]] = None,
-        visibility: Optional["Visibility"] = None,
+        visibility: Optional[Visibility] = None,
         is_static: bool = False,
         is_abstract: bool = False
     ):
         self.name = name
         self.return_type = return_type
-        self.parameters = parameters if parameters is not None else []
+        self.parameters: Dict[str, ParameterModel] = parameters or {}
         self.visibility = visibility
         self.is_static = is_static
         self.is_abstract = is_abstract
@@ -23,29 +32,37 @@ class OperationModel:
     def signature(self) -> str:
         params = ", ".join(
             f"{p.name}: {p.type.name if p.type else 'Any'}"
-            for p in self.parameters
+            for p in self.parameters.values()
         )
         ret = self.return_type.name if self.return_type else "void"
         return f"{self.name}({params}) -> {ret}"
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> OperationDict:
         return {
             "name": self.name,
             "return_type": self.return_type.to_dict() if self.return_type else None,
-            "parameters": [p.to_dict() for p in self.parameters],
+            "parameters": {
+                name: p.to_dict()
+                for name, p in self.parameters.items()
+            },
             "visibility": self.visibility.value if self.visibility else None,
             "is_static": self.is_static,
             "is_abstract": self.is_abstract,
         }
 
     @staticmethod
-    def from_dict(d: Dict[str, Any]) -> "OperationModel":
+    def from_dict(d: OperationDict) -> "OperationModel":
         rt = d.get("return_type")
-        return OperationModel(
+
+        op = OperationModel(
             name=d.get("name", "<op>"),
             return_type=TypeModel.from_dict(rt) if rt else None,
-            parameters=[ParameterModel.from_dict(p) for p in d.get("parameters", [])],
             visibility=Visibility.from_string(d.get("visibility")),
-            is_static=bool(d.get("is_static", False)),
-            is_abstract=bool(d.get("is_abstract", False)),
+            is_static=d.get("is_static", False),
+            is_abstract=d.get("is_abstract", False),
         )
+
+        for name, p in d.get("parameters", {}).items():
+            op.parameters[name] = ParameterModel.from_dict(p)
+
+        return op
