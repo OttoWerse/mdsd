@@ -1,4 +1,4 @@
-from constants import FieldNames, Placeholders
+from constants import FieldNames
 from models.AttributeModel import AttributeModel
 from models.ClassModel import ClassModel
 from models.OperationModel import OperationModel
@@ -43,7 +43,7 @@ class XmiParser:
             try:
                 attribute_name = attribute_node[FieldNames.NAME]
             except Exception as e:  # handle no name
-                attribute_name = None # Placeholders.EMPTY_ATTRIBUTE_NAME
+                attribute_name = None
             try:
                 attribute_type = attribute_node[FieldNames.TYPE]
             except Exception as e:  # Handle no type
@@ -75,7 +75,7 @@ class XmiParser:
             try:
                 parameter_name = parameter_node[FieldNames.NAME]
             except Exception as e:  # Handle no name
-                parameter_name = Placeholders.EMPTY_PARAMETER_NAME
+                parameter_name = None
             try:
                 parameter_type = parameter_node[FieldNames.TYPE]
             except Exception as e:  # Handle no type
@@ -93,7 +93,7 @@ class XmiParser:
             try:
                 operation_name = operation_node[FieldNames.NAME]
             except Exception as e:  # handle no name
-                operation_name = Placeholders.EMPTY_OPERATION_NAME
+                operation_name = None
             operation_visibility = operation_node[FieldNames.VISIBILITY]
         except Exception as e:
             logger.exception(f'EXCEPTION parsing operation: {e}')
@@ -132,7 +132,7 @@ class XmiParser:
             try:
                 class_name = class_node[FieldNames.NAME]
             except Exception as e:  # handle no name
-                class_name = Placeholders.EMPTY_CLASS_NAME
+                class_name = None
             # TODO: Add these fields properly
             #  class_package = class_node[FieldNames.PACKAGE]
             #  class_visibility = class_node[FieldNames.VISIBILITY]
@@ -188,12 +188,7 @@ class XmiParser:
                 try:
                     relationship_name = relationship_node[FieldNames.NAME]
                 except Exception as e:
-                    match relationship_type:
-                        # TODO: Add cases for known relationships, use constants and translate later in renderGerman
-                        case 'uml:Association':
-                            relationship_name = Placeholders.ASSOCIATION_NAME
-                        case _:
-                            relationship_name = Placeholders.EMPTY_RELATIONSHIP_NAME
+                    relationship_name = relationship_type
                 # Get ends of relationship from XMI
                 ends = [child[FieldNames.TYPE] for child in relationship_node.children if
                         child.name == FieldNames.OWNED_END]

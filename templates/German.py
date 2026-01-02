@@ -1,6 +1,16 @@
 from string import Template
 
-"""TEMPLATES"""
+"""Placeholders for empty names"""
+EMPTY_ATTRIBUTE_NAME = 'Namenloses Attribut'
+EMPTY_OPERATION_NAME = 'Namenlose Methode'
+EMPTY_PARAMETER_NAME = 'Namenloser Parameter'
+EMPTY_CLASS_NAME = 'Namenlose Klasse'
+EMPTY_RELATIONSHIP_NAME = 'Namenlose Beziehung'
+
+"""Strings for known types"""
+ASSOCIATION_NAME = 'Assoziation'
+
+"""Templates"""
 # TODO: separate template into it's sub parts to remove empty method and attribute sections from print
 # TODO: remove count in case of 1
 CLASS_DESCRIPTION = Template(
