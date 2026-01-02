@@ -1,3 +1,4 @@
+from constants import Placeholders
 from models.ClassModel import ClassModel
 from templates.German import CLASS_DESCRIPTION, RELATIONSHIP_DESCRIPTION, PARAMETER_DESCRIPTION, OPERATION_DESCRIPTION, \
     ATTRIBUTE_DESCRIPTION
@@ -38,7 +39,7 @@ class GermanRenderer:
         return_text = ''
         for attribute_object in attributes:
             attribute_visibility = attribute_object.visibility
-            attribute_name = attribute_object.name
+            attribute_name = attribute_object.name or Placeholders.EMPTY_ATTRIBUTE_NAME
             attribute_type = attribute_object.type
             # Use Template to create formatted text and append to return_text
             return_text += f'{ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
@@ -51,13 +52,15 @@ class GermanRenderer:
         for operation_object in operations:
             operation_name = operation_object.name
             operation_visibility = operation_object.visibility
+            operation_return_type = operation_object.return_type
             parameter_count = len(operation_object.parameters)
             parameter_list = self.render_parameter_list(operation_object.parameters.values())
             # Use Template to create formatted text and append to return_text
             return_text += f'{OPERATION_DESCRIPTION.substitute(visibility=operation_visibility,
                                                                operation_name=operation_name,
-                                                               parameters_list=parameter_list,
-                                                               return_type='TODO', )} \n'
+                                                               return_type=operation_return_type,
+                                                               parameters_count=parameter_count,
+                                                               parameters_list=parameter_list, )} \n'
         return return_text[:-1]  # Remove trailing "\n" gracefully
 
     def render_parameter_list(self, parameters):

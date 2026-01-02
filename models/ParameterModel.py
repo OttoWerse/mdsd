@@ -12,11 +12,11 @@ class ParameterDict(TypedDict):
 
 class ParameterModel:
     def __init__(
-        self,
-        name: str,
-        type: Optional[TypeModel] = None,
-        default: Optional[str] = None,
-        direction: Optional[str] = None,
+            self,
+            name: str,
+            type: Optional[TypeModel] = None,
+            default: Optional[str] = None,
+            direction: Optional[str] = None,
     ):
         self.name = name
         self.type = type

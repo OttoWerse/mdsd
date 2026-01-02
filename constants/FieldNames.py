@@ -1,5 +1,7 @@
 NAME = "name"
 TYPE = "type"
+KIND = "kind"
+VISIBILITY = "visibility"
 OWNED_END = "ownedEnd"
 OWNED_OPERATION = "ownedOperation"
 OWNED_PARAMETER = "ownedParameter"

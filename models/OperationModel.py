@@ -8,6 +8,7 @@ class OperationDict(TypedDict):
     name: str
     return_type: Optional[Dict[str, object]]
     parameters: Dict[str, Dict[str, object]]
+    return_type: str
     visibility: Optional[str]
     is_static: bool
     is_abstract: bool
@@ -15,17 +16,26 @@ class OperationDict(TypedDict):
 
 class OperationModel:
     def __init__(
-        self,
-        name: str,
-        return_type: Optional[TypeModel] = None,
-        parameters: Optional[Dict[str, ParameterModel]] = None,
-        visibility: Optional[VisibilityType] = None,
-        is_static: bool = False,
-        is_abstract: bool = False
+            self,
+            name: str,
+            return_type: Optional[TypeModel] = None,
+            parameters: Optional[Dict[str, ParameterModel]] = None,
+            visibility: Optional[VisibilityType] = None,
+            is_static: bool = False,
+            is_abstract: bool = False
     ):
         self.name = name
         self.return_type = return_type
+        # TODO: Check for a single parameter of type "return" and add to OperationModel as attribute return type
+        return_parameter = None
+        for parameter in parameters:
+            if parameters[parameter].direction == 'return':
+                return_parameter = parameter
+                return_type = parameters[parameter].type
+        if return_parameter is not None:
+            del parameters[return_parameter]
         self.parameters: Dict[str, ParameterModel] = parameters or {}
+        self.return_type = return_type
         self.visibility = visibility
         self.is_static = is_static
         self.is_abstract = is_abstract

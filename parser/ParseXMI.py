@@ -43,11 +43,18 @@ class XmiParser:
             try:
                 attribute_name = attribute_node[FieldNames.NAME]
             except Exception as e:  # handle no name
-                attribute_name = Placeholders.EMPTY_ATTRIBUTE_NAME
+                attribute_name = None # Placeholders.EMPTY_ATTRIBUTE_NAME
+            try:
+                attribute_type = attribute_node[FieldNames.TYPE]
+            except Exception as e:  # Handle no type
+                attribute_type = None  # TODO: This specific scenario needs to be rendered explicitly as "no type given"!
+            attribute_visibility = attribute_node[FieldNames.VISIBILITY]
         except Exception as e:
             logger.exception(f'EXCEPTION parsing attribute: {e}')
             sys.exit()
-        return AttributeModel(name=attribute_name)
+        return AttributeModel(name=attribute_name,
+                              type=attribute_type,
+                              visibility=attribute_visibility, )
 
     def parse_class_attributes(self, class_node):
         try:
@@ -67,13 +74,19 @@ class XmiParser:
         try:
             try:
                 parameter_name = parameter_node[FieldNames.NAME]
-            except Exception as e:  # handle no name
+            except Exception as e:  # Handle no name
                 parameter_name = Placeholders.EMPTY_PARAMETER_NAME
-            # TODO: Check parameter type = "return" and add to OperationModel return type
+            try:
+                parameter_type = parameter_node[FieldNames.TYPE]
+            except Exception as e:  # Handle no type
+                parameter_type = None  # TODO: This specific scenario needs to be rendered explicitly as "no type given"!
+            parameter_direction = parameter_node[FieldNames.KIND]
         except Exception as e:
             logger.exception(f'EXCEPTION parsing parameter: {e}')
             sys.exit()
-        return ParameterModel(name=parameter_name)
+        return ParameterModel(name=parameter_name,
+                              type=parameter_type,
+                              direction=parameter_direction, )
 
     def parse_operation(self, operation_node):
         try:
@@ -81,6 +94,7 @@ class XmiParser:
                 operation_name = operation_node[FieldNames.NAME]
             except Exception as e:  # handle no name
                 operation_name = Placeholders.EMPTY_OPERATION_NAME
+            operation_visibility = operation_node[FieldNames.VISIBILITY]
         except Exception as e:
             logger.exception(f'EXCEPTION parsing operation: {e}')
             sys.exit()
@@ -96,7 +110,8 @@ class XmiParser:
             parameter = self.parse_parameter(parameter_node)
             parameters[parameter_id] = parameter
         return OperationModel(name=operation_name,
-                              parameters=parameters, )
+                              parameters=parameters,
+                              visibility=operation_visibility, )
 
     def parse_class_operations(self, class_node):
         try:

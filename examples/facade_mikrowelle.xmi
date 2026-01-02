@@ -12929,7 +12929,7 @@
 				<businessModel xmi:value="false"/>
 				<qualityScore value="-1"/>
 			</xmi:Extension>
-			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="hersteller" visibility="private" xmi:id="yIO50tmAUBQAAgiq" xmi:type="uml:Property">
+			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="hersteller" type="string_id" visibility="private" xmi:id="yIO50tmAUBQAAgiq" xmi:type="uml:Property">
 				<xmi:Extension extender="Visual Paradigm">
 					<attribute/>
 					<isAbstract xmi:value="false"/>
@@ -12937,7 +12937,7 @@
 					<qualityScore value="-1"/>
 				</xmi:Extension>
 			</ownedAttribute>
-			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="modell" visibility="private" xmi:id="7Fe50tmAUBQAAgis" xmi:type="uml:Property">
+			<ownedAttribute aggregation="none" isDerived="false" isDerivedUnion="false" isID="false" isLeaf="false" isReadOnly="false" isStatic="false" name="modell" type="string_id" visibility="private" xmi:id="7Fe50tmAUBQAAgis" xmi:type="uml:Property">
 				<xmi:Extension extender="Visual Paradigm">
 					<attribute/>
 					<isAbstract xmi:value="false"/>
@@ -13382,6 +13382,7 @@
 			</xmi:Extension>
 		</ownedMember>
 		<ownedMember name="void" visibility="public" xmi:id="void_id" xmi:type="uml:DataType"/>
+		<ownedMember name="string" visibility="public" xmi:id="string_id" xmi:type="uml:DataType"/>
 		<ownedMember name="float" visibility="public" xmi:id="float_id" xmi:type="uml:DataType"/>
 		<ownedMember name="int" visibility="public" xmi:id="int_id" xmi:type="uml:DataType"/>
 	</uml:Model>
@@ -13394,7 +13395,7 @@
 				<afilterByViewpointLegend value="true"/>
 				<apmAuthor value="Otto"/>
 				<apmCreateDateTime value="1765022552952"/>
-				<apmLastModified value="1766500210871"/>
+				<apmLastModified value="1767371632116"/>
 				<ateamworkCreateDateTime value="0"/>
 				<ashowShapeLegend value="false"/>
 				<ashowConnectorLegend value="false"/>
