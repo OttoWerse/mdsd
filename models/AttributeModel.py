@@ -1,6 +1,6 @@
 from typing import Optional, Dict, TypedDict
 from models import TypeModel
-
+from models.VisibilityType import VisibilityType
 
 
 class AttributeDict(TypedDict):
@@ -49,7 +49,7 @@ class AttributeModel:
         return AttributeModel(
             name=d.get("name", "<attr>"),
             type=TypeModel.from_dict(t) if t else None,
-            visibility=Visibility.from_string(d.get("visibility")),
+            visibility=VisibilityType.from_string(d.get("visibility")),
             multiplicity=d.get("multiplicity"),
             default_value=d.get("default_value"),
             is_static=d.get("is_static", False),

@@ -1,6 +1,7 @@
 from typing import Optional, Dict, TypedDict
 
 from models import ParameterModel, TypeModel
+from models.VisibilityType import VisibilityType
 
 
 class OperationDict(TypedDict):
@@ -18,7 +19,7 @@ class OperationModel:
         name: str,
         return_type: Optional[TypeModel] = None,
         parameters: Optional[Dict[str, ParameterModel]] = None,
-        visibility: Optional[Visibility] = None,
+        visibility: Optional[VisibilityType] = None,
         is_static: bool = False,
         is_abstract: bool = False
     ):
