@@ -35,29 +35,63 @@ class GermanRenderer:
     def render_attribute_list(self, attributes):
         return_text = ''
         for attribute_object in attributes:
-            attribute_visibility = attribute_object.visibility
+            match attribute_object.visibility:
+                case 'public':
+                    attribute_visibility = German.VISIBILITY_PUBLIC
+                case 'package':
+                    attribute_visibility = German.VISIBILITY_PACKAGE
+                case 'protected':
+                    attribute_visibility = German.VISIBILITY_PROTECTED
+                case 'private':
+                    attribute_visibility = German.VISIBILITY_PRIVATE
+                case _:
+                    attribute_visibility = German.VISIBILITY_UNKNOWN
             attribute_name = attribute_object.name or German.EMPTY_ATTRIBUTE_NAME
             attribute_type = attribute_object.type
             # Use Template to create formatted text and append to return_text
             return_text += f'{German.ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
                                                                       attribute_name=attribute_name,
-                                                                      attribute_type=attribute_type)} \n'
+                                                                      attribute_type=attribute_type)}'
         return return_text[:-1]  # Remove trailing "\n" gracefully
 
     def render_operation_list(self, operations):
         return_text = ''
         for operation_object in operations:
             operation_name = operation_object.name or German.EMPTY_OPERATION_NAME
-            operation_visibility = operation_object.visibility
+            match operation_object.visibility:
+                case 'public':
+                    operation_visibility = German.VISIBILITY_PUBLIC
+                case 'package':
+                    operation_visibility = German.VISIBILITY_PACKAGE
+                case 'protected':
+                    operation_visibility = German.VISIBILITY_PROTECTED
+                case 'private':
+                    operation_visibility = German.VISIBILITY_PRIVATE
+                case _:
+                    operation_visibility = German.VISIBILITY_UNKNOWN
             operation_return_type = operation_object.return_type
             parameter_count = len(operation_object.parameters)
-            parameter_list = self.render_parameter_list(operation_object.parameters.values())
-            # Use Template to create formatted text and append to return_text
-            return_text += f'{German.OPERATION_DESCRIPTION.substitute(visibility=operation_visibility,
-                                                                      operation_name=operation_name,
-                                                                      return_type=operation_return_type,
-                                                                      parameters_count=parameter_count,
-                                                                      parameters_list=parameter_list, )} \n'
+            if parameter_count == 1:
+                for parameter_object in operation_object.parameters.values():
+                    parameter_name = parameter_object.name or German.EMPTY_PARAMETER_NAME
+                    parameter_type = parameter_object.type
+                    parameter_text = German.PARAMETER_DESCRIPTION_SINGLE.substitute(parameter_type=parameter_type,
+                                                                                    parameter_name=parameter_name)
+                    return_text += f'{German.OPERATION_DESCRIPTION_SINGLE.substitute(visibility=operation_visibility,
+                                                                                     operation_name=operation_name,
+                                                                                     return_type=operation_return_type,
+                                                                                     parameters_count=parameter_count,
+                                                                                     parameters_text=parameter_text, )} \n'
+            elif parameter_count > 1:
+                parameter_list = self.render_parameter_list(operation_object.parameters.values())
+                # Use Template to create formatted text and append to return_text
+                return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE.substitute(visibility=operation_visibility,
+                                                                                   operation_name=operation_name,
+                                                                                   return_type=operation_return_type,
+                                                                                   parameters_count=parameter_count,
+                                                                                   parameters_list=parameter_list, )} \n'
+            else:
+                pass  # TODO: Can this haappen unless the XMI file is broken?
         return return_text[:-1]  # Remove trailing "\n" gracefully
 
     def render_parameter_list(self, parameters):
@@ -66,8 +100,8 @@ class GermanRenderer:
             parameter_direction = parameter_object.direction
             parameter_name = parameter_object.name or German.EMPTY_PARAMETER_NAME
             parameter_type = parameter_object.type
-            return_text += f'{German.PARAMETER_DESCRIPTION.substitute(parameter_type=parameter_type,
-                                                                      parameter_name=parameter_name)}, '
+            return_text += f'{German.PARAMETER_DESCRIPTION_MULTIPLE.substitute(parameter_type=parameter_type,
+                                                                               parameter_name=parameter_name)}, '
         return return_text[:-2]  # Remove trailing ", " gracefully
 
     def render_relationship(self, relationship_object):
