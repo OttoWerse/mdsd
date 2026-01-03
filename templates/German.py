@@ -9,8 +9,14 @@ EMPTY_PARAMETER_NAME = 'Namenloser Parameter'
 EMPTY_CLASS_NAME = 'Namenlose Klasse'
 EMPTY_RELATIONSHIP_NAME = 'Namenlose Beziehung'
 
-"""Strings for known types"""
+"""Strings for known relationship types"""
 ASSOCIATION_NAME = 'Assoziation'
+
+"""Strings for known datatypes"""
+DATATYPE_STRING = 'freitext'
+DATATYPE_INTEGER = 'ganze Zahl'
+DATATYPE_FLOAT = 'gleitkommazahl'
+# TODO: More advanced datatypes etc.
 
 """Strings for visibility"""
 VISIBILITY_UNKNOWN = 'undefiniert sichtbare'

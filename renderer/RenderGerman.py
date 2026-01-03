@@ -47,7 +47,15 @@ class GermanRenderer:
                 case _:
                     attribute_visibility = German.VISIBILITY_UNKNOWN
             attribute_name = attribute_object.name or German.EMPTY_ATTRIBUTE_NAME
-            attribute_type = attribute_object.type
+            match attribute_object.type:
+                case 'string_id':
+                    attribute_type = German.DATATYPE_STRING
+                case 'float_id':
+                    attribute_type = German.DATATYPE_FLOAT
+                case 'int_id':
+                    attribute_type = German.DATATYPE_INTEGER
+                case _:
+                    attribute_type = f'"{attribute_object.type}"'
             # Use Template to create formatted text and append to return_text
             return_text += f'{German.ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
                                                                       attribute_name=attribute_name,
