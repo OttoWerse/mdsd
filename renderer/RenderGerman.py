@@ -1,3 +1,4 @@
+from constants import DataTypesUML, VisiblityUML, RelationshipsUML
 from templates import German
 
 
@@ -7,10 +8,10 @@ class GermanRenderer:
         self.relationships = relationships
 
     def render_class_diagram(self):
-        return_text = 'Klassen: \n'
+        return_text = German.CLASSES_HEADING
         for class_object in self.classes.values():
             return_text += f'{self.render_class(class_object)} \n'
-        return_text += 'Beziehungen: \n'
+        return_text += German.RELATIONSHIP_HEADING
         for relationship_object in self.relationships.values():
             return_text += f'{self.render_relationship(relationship_object)} \n'
         return return_text
@@ -32,30 +33,38 @@ class GermanRenderer:
         )
         return return_text
 
+    def get_attribute_type_string(self, attribute_type):
+        match attribute_type:
+            case DataTypesUML.STRING:
+                return German.DATATYPE_STRING
+            case DataTypesUML.FLOAT:
+                return German.DATATYPE_FLOAT
+            case DataTypesUML.INT:
+                return German.DATATYPE_INTEGER
+            case DataTypesUML.VOID:
+                return German.DATATYPE_VOID
+            case _:
+                return f'"{attribute_type}"'
+
+    def get_visibility_string(self, visibility):
+        match visibility:
+            case VisiblityUML.PUBLIC:
+                return German.VISIBILITY_PUBLIC
+            case VisiblityUML.PACKAGE:
+                return German.VISIBILITY_PACKAGE
+            case VisiblityUML.PROTECTED:
+                return German.VISIBILITY_PROTECTED
+            case VisiblityUML.PRIVATE:
+                return German.VISIBILITY_PRIVATE
+            case _:
+                return German.VISIBILITY_UNKNOWN
+
     def render_attribute_list(self, attributes):
         return_text = ''
         for attribute_object in attributes:
-            match attribute_object.visibility:
-                case 'public':
-                    attribute_visibility = German.VISIBILITY_PUBLIC
-                case 'package':
-                    attribute_visibility = German.VISIBILITY_PACKAGE
-                case 'protected':
-                    attribute_visibility = German.VISIBILITY_PROTECTED
-                case 'private':
-                    attribute_visibility = German.VISIBILITY_PRIVATE
-                case _:
-                    attribute_visibility = German.VISIBILITY_UNKNOWN
+            attribute_visibility = self.get_visibility_string(attribute_object.visibility)
             attribute_name = attribute_object.name or German.EMPTY_ATTRIBUTE_NAME
-            match attribute_object.type:
-                case 'string_id':
-                    attribute_type = German.DATATYPE_STRING
-                case 'float_id':
-                    attribute_type = German.DATATYPE_FLOAT
-                case 'int_id':
-                    attribute_type = German.DATATYPE_INTEGER
-                case _:
-                    attribute_type = f'"{attribute_object.type}"'
+            attribute_type = self.get_attribute_type_string(attribute_object.type)
             # Use Template to create formatted text and append to return_text
             return_text += f'{German.ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
                                                                       attribute_name=attribute_name,
@@ -66,17 +75,8 @@ class GermanRenderer:
         return_text = ''
         for operation_object in operations:
             operation_name = operation_object.name or German.EMPTY_OPERATION_NAME
-            match operation_object.visibility:
-                case 'public':
-                    operation_visibility = German.VISIBILITY_PUBLIC
-                case 'package':
-                    operation_visibility = German.VISIBILITY_PACKAGE
-                case 'protected':
-                    operation_visibility = German.VISIBILITY_PROTECTED
-                case 'private':
-                    operation_visibility = German.VISIBILITY_PRIVATE
-                case _:
-                    operation_visibility = German.VISIBILITY_UNKNOWN
+            operation_visibility = German.VISIBILITY_UNKNOWN
+            operation_visibility = self.get_visibility_string(operation_object.visibility)
             operation_return_type = operation_object.return_type
             parameter_count = len(operation_object.parameters)
             if parameter_count == 1:
@@ -85,19 +85,31 @@ class GermanRenderer:
                     parameter_type = parameter_object.type
                     parameter_text = German.PARAMETER_DESCRIPTION_SINGLE.substitute(parameter_type=parameter_type,
                                                                                     parameter_name=parameter_name)
-                    return_text += f'{German.OPERATION_DESCRIPTION_SINGLE.substitute(visibility=operation_visibility,
-                                                                                     operation_name=operation_name,
-                                                                                     return_type=operation_return_type,
-                                                                                     parameters_count=parameter_count,
-                                                                                     parameters_text=parameter_text, )} \n'
+                    if operation_object.return_type == DataTypesUML.VOID:
+                        return_text += f'{German.OPERATION_DESCRIPTION_SINGLE_NO_RETURN.substitute(visibility=operation_visibility,
+                                                                                                   operation_name=operation_name,
+                                                                                                   parameters_count=parameter_count,
+                                                                                                   parameters_text=parameter_text, )} \n'
+                    else:
+                        return_text += f'{German.OPERATION_DESCRIPTION_SINGLE_WITH_RETURN.substitute(visibility=operation_visibility,
+                                                                                                     operation_name=operation_name,
+                                                                                                     return_type=operation_return_type,
+                                                                                                     parameters_count=parameter_count,
+                                                                                                     parameters_text=parameter_text, )} \n'
             elif parameter_count > 1:
                 parameter_list = self.render_parameter_list(operation_object.parameters.values())
                 # Use Template to create formatted text and append to return_text
-                return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE.substitute(visibility=operation_visibility,
-                                                                                   operation_name=operation_name,
-                                                                                   return_type=operation_return_type,
-                                                                                   parameters_count=parameter_count,
-                                                                                   parameters_list=parameter_list, )} \n'
+                if operation_object.return_type == DataTypesUML.VOID:
+                    return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE_NO_RETURN.substitute(visibility=operation_visibility,
+                                                                                                 operation_name=operation_name,
+                                                                                                 parameters_count=parameter_count,
+                                                                                                 parameters_list=parameter_list, )} \n'
+                else:
+                    return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE_WITH_RETURN.substitute(visibility=operation_visibility,
+                                                                                                   operation_name=operation_name,
+                                                                                                   return_type=operation_return_type,
+                                                                                                   parameters_count=parameter_count,
+                                                                                                   parameters_list=parameter_list, )} \n'
             else:
                 pass  # TODO: Can this haappen unless the XMI file is broken?
         return return_text[:-1]  # Remove trailing "\n" gracefully
@@ -116,11 +128,12 @@ class GermanRenderer:
         return_text = ''
         relationship_name = relationship_object.name
         match relationship_name:
-            case 'uml:Association':
+            case RelationshipsUML.ASSOCIATION:
                 relationship_name = German.ASSOCIATION_NAME
-            # TODO: Add cases for known relationships, use constants and translate later in renderGerman
-            case _:
+            case '':
                 relationship_name = German.EMPTY_RELATIONSHIP_NAME
+            case _:
+                relationship_name = German.RELATIONSHIP_NAME.substitute(relation_name=relationship_name)
         # Use Template to create formatted text into return_text
         return_text = German.RELATIONSHIP_DESCRIPTION.substitute(source=self.classes[relationship_object.source].name,
                                                                  relation_type=relationship_name,

@@ -16,6 +16,7 @@ ASSOCIATION_NAME = 'Assoziation'
 DATATYPE_STRING = 'freitext'
 DATATYPE_INTEGER = 'ganze Zahl'
 DATATYPE_FLOAT = 'gleitkommazahl'
+DATATYPE_VOID = 'Keine Wertübergabe'
 # TODO: More advanced datatypes etc.
 
 """Strings for visibility"""
@@ -26,6 +27,9 @@ VISIBILITY_PROTECTED = 'geschützte'
 VISIBILITY_PACKAGE = 'paketweit sichtbare'
 
 """Templates"""
+CLASSES_HEADING = 'Klassen: \n'
+RELATIONSHIP_HEADING = 'Berechnungen: \n'
+
 # TODO: separate template into it's sub parts to remove empty method and attribute sections from print
 # TODO: remove count in case of 1
 CLASS_DESCRIPTION = Template(
@@ -48,11 +52,17 @@ ATTRIBUTE_DESCRIPTION = Template(
 )
 
 """Operations"""
-OPERATION_DESCRIPTION_MULTIPLE = Template(
-    '''Die $visibility Methode "$operation_name" mit Rückgabewert "$return_type" und $parameters_count Parametern. $parameters_list'''
+OPERATION_DESCRIPTION_MULTIPLE_WITH_RETURN = Template(
+    '''Die $visibility Methode "$operation_name" mit Rückgabewert $return_type akzeptiert $parameters_count Parameter. $parameters_list'''
 )
-OPERATION_DESCRIPTION_SINGLE = Template(
-    '''Die $visibility Methode "$operation_name" liefert einen Wert vom Typ "$return_type" zurück und akzeptiert einen Parameter $parameters_text. '''
+OPERATION_DESCRIPTION_MULTIPLE_NO_RETURN = Template(
+    '''Die $visibility Methode "$operation_name" ohne Rückgabewert  akzeptiert $parameters_count Parameter. $parameters_list'''
+)
+OPERATION_DESCRIPTION_SINGLE_WITH_RETURN = Template(
+    '''Die $visibility Methode "$operation_name" mit Rückgabewert $return_type akzeptiert einen Parameter $parameters_text. '''
+)
+OPERATION_DESCRIPTION_SINGLE_NO_RETURN = Template(
+    '''Die $visibility Methode "$operation_name" ohne Rückgabewert akzeptiert einen Parameter $parameters_text. '''
 )
 """Parameters"""
 PARAMETER_DESCRIPTION_SINGLE = Template(
@@ -62,6 +72,9 @@ PARAMETER_DESCRIPTION_MULTIPLE = Template(
     '''Einen Parameter "$parameter_name" vom Typ "$parameter_type". '''
 )
 
+RELATIONSHIP_NAME = Template(
+    '''Beziehung namens "$relation_name"'''
+)
 RELATIONSHIP_DESCRIPTION = Template(
-    '''Zwischen "$source" und "$target" besteht eine Beziehung vom Typ "$relation_type".'''
+    '''Zwischen "$source" und "$target" besteht eine $relation_type.'''
 )

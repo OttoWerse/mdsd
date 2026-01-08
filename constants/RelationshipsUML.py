@@ -1,0 +1,1 @@
+ASSOCIATION = 'uml:Association'
