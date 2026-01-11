@@ -1,13 +1,13 @@
 from typing import Optional, Dict, TypedDict
 
-from models import ParameterModel, TypeModel
+from models import TypeModel, ParameterModel
 from models.VisibilityType import VisibilityType
 
 
 class OperationDict(TypedDict):
     name: str
-    return_type: Optional[Dict[str, object]]
-    parameters: Dict[str, Dict[str, object]]
+    return_type: Optional[object]
+    parameters: Dict[str, Dict[str, ParameterModel]]
     return_type: str
     visibility: Optional[str]
     is_static: bool

@@ -5,7 +5,7 @@ from models import TypeModel
 
 class ParameterDict(TypedDict):
     name: str
-    type: Optional[Dict[str, object]]
+    type: Optional[TypeModel]
     default: Optional[str]
     direction: Optional[str]
 

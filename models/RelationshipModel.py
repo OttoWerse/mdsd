@@ -1,11 +1,14 @@
 from typing import Any
 
+from models.ClassModel import ClassModel
+
+
 class RelationshipModel:
     def __init__(
         self,
         name: str,
-        source: Any,
-        target: Any,
+        source: ClassModel,
+        target: ClassModel,
         visibility: str = "public",
     ):
         self.name = name

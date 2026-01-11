@@ -5,8 +5,8 @@ from models.VisibilityType import VisibilityType
 
 class AttributeDict(TypedDict):
     name: str
-    type: Optional[Dict[str, object]]
-    visibility: Optional[str]
+    type: Optional[TypeModel]
+    visibility: Optional[VisibilityType]
     multiplicity: Optional[str]
     default_value: Optional[str]
     is_static: bool
@@ -15,14 +15,14 @@ class AttributeDict(TypedDict):
 
 class AttributeModel:
     def __init__(
-        self,
-        name: str,
-        type: Optional["TypeModel"] = None,
-        visibility: Optional["Visibility"] = None,
-        multiplicity: Optional[str] = None,
-        default_value: Optional[str] = None,
-        is_static: bool = False,
-        is_final: bool = False,
+            self,
+            name: str,
+            type: Optional[TypeModel] = None,
+            visibility: Optional[VisibilityType] = None,
+            multiplicity: Optional[str] = None,
+            default_value: Optional[str] = None,
+            is_static: bool = False,
+            is_final: bool = False,
     ):
         self.name = name
         self.type = type

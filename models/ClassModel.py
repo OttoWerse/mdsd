@@ -7,8 +7,8 @@ from models.VisibilityType import VisibilityType
 class ClassDict(TypedDict):
     name: str
     package: Optional[str]
-    attributes: Dict[str, Dict[str, object]]
-    operations: Dict[str, Dict[str, object]]
+    attributes: Dict[str, Dict[str, AttributeModel]]
+    operations: Dict[str, Dict[str, OperationModel]]
     visibility: str
     is_abstract: bool
     super_classes: List[str]
@@ -17,15 +17,15 @@ class ClassDict(TypedDict):
 
 class ClassModel:
     def __init__(
-        self,
-        name: Optional[str] = None,
-        package: Optional[str] = None,
-        attributes: Optional[Dict[str, AttributeModel]] = None,
-        operations: Optional[Dict[str, OperationModel]] = None,
-        visibility: Optional[VisibilityType] = None,
-        is_abstract: bool = False,
-        super_classes: Optional[List[str]] = None,
-        interfaces: Optional[List[str]] = None
+            self,
+            name: Optional[str] = None,
+            package: Optional[str] = None,
+            attributes: Optional[Dict[str, AttributeModel]] = None,
+            operations: Optional[Dict[str, OperationModel]] = None,
+            visibility: Optional[VisibilityType] = None,
+            is_abstract: bool = False,
+            super_classes: Optional[List[str]] = None,
+            interfaces: Optional[List[str]] = None
     ):
         self.name = name or "<class>"
         self.package = package
