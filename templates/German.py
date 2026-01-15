@@ -1,6 +1,6 @@
 from string import Template
 
-from constants.FieldNames import VISIBILITY
+# TODO: Methoden anstatt konstanten, aufrufen in Redner, Render unabhängig von Sprache.
 
 """Placeholders for empty names"""
 EMPTY_ATTRIBUTE_NAME = 'Namenloses Attribut'
