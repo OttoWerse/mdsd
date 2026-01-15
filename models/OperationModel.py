@@ -6,7 +6,6 @@ from models.VisibilityType import VisibilityType
 
 class OperationDict(TypedDict):
     name: str
-    return_type: Optional[object]
     parameters: Dict[str, Dict[str, ParameterModel]]
     return_type: str
     visibility: Optional[str]
