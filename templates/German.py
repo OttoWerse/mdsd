@@ -1,7 +1,5 @@
 from string import Template
 
-# TODO: Methoden anstatt konstanten, aufrufen in Redner, Render unabhängig von Sprache.
-
 """Placeholders for empty names"""
 EMPTY_ATTRIBUTE_NAME = 'Namenloses Attribut'
 EMPTY_OPERATION_NAME = 'Namenlose Methode'
@@ -30,26 +28,19 @@ VISIBILITY_PACKAGE = 'paketweit sichtbare'
 CLASSES_HEADING = 'Klassen: \n'
 RELATIONSHIP_HEADING = 'Berechnungen: \n'
 
-# TODO: separate template into it's sub parts to remove empty method and attribute sections from print
-# TODO: remove count in case of 1
 CLASS_DESCRIPTION = Template(
     '''Die Klasse "$class_name" repräsentiert eine Einheit im System. 
-Sie besitzt $attribute_count Attribute. $attribute_list
+Sie besitzt $attribute_count Attribute; $attribute_list
 Zusätzlich stellt sie $method_count Methoden bereit. $method_list
 '''
 )
 
-TYPE_DESCRIPTION = Template(
-    '''Der Typ von "$element_name" ist "$type_name". '''
-)
+TYPE_DESCRIPTION = Template('''Der Typ von "$element_name" ist "$type_name". ''')
 
-VISIBILITY_DESCRIPTION = Template(
-    '''Die Sichtbarkeit von "$element_name" ist "$visibility". '''
-)
+VISIBILITY_DESCRIPTION = Template('''Die Sichtbarkeit von "$element_name" ist "$visibility". ''')
 
 ATTRIBUTE_DESCRIPTION = Template(
-    '''Ein $attribute_visibility Attribut "$attribute_name" vom Typ "$attribute_type". '''
-)
+    '''Ein $attribute_visibility Attribut namens "$attribute_name" vom Typ "$attribute_type". ''')
 
 """Operations"""
 OPERATION_DESCRIPTION_MULTIPLE_WITH_RETURN = Template(
