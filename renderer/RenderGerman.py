@@ -32,7 +32,7 @@ class GermanRenderer:
         )
         return return_text
 
-    def get_attribute_type_string(self, attribute_type):
+    def get_type_string(self, attribute_type):
         match attribute_type:
             case DataTypesUML.STRING:
                 return German.DATATYPE_STRING
@@ -43,7 +43,7 @@ class GermanRenderer:
             case DataTypesUML.VOID:
                 return German.DATATYPE_VOID
             case _:
-                return f'"{attribute_type}"'
+                input(attribute_type)
 
     def get_visibility_string(self, visibility):
         match visibility:
@@ -63,7 +63,7 @@ class GermanRenderer:
         for attribute_object in attributes:
             attribute_visibility = self.get_visibility_string(attribute_object.visibility)
             attribute_name = attribute_object.name or German.EMPTY_ATTRIBUTE_NAME
-            attribute_type = self.get_attribute_type_string(attribute_object.type)
+            attribute_type = self.get_type_string(attribute_object.type)
             # Use Template to create formatted text and append to return_text
             return_text += f'{German.ATTRIBUTE_DESCRIPTION.substitute(attribute_visibility=attribute_visibility,
                                                                       attribute_name=attribute_name,
@@ -81,7 +81,8 @@ class GermanRenderer:
             if parameter_count == 1:
                 for parameter_object in operation_object.parameters.values():
                     parameter_name = parameter_object.name or German.EMPTY_PARAMETER_NAME
-                    parameter_type = parameter_object.type
+                    # TODO: Test & rename
+                    parameter_type = self.get_type_string(parameter_object.type)
                     parameter_text = German.PARAMETER_DESCRIPTION_SINGLE.substitute(parameter_type=parameter_type,
                                                                                     parameter_name=parameter_name)
                     if operation_object.return_type == DataTypesUML.VOID:
@@ -118,7 +119,8 @@ class GermanRenderer:
         for parameter_object in parameters:
             parameter_direction = parameter_object.direction
             parameter_name = parameter_object.name or German.EMPTY_PARAMETER_NAME
-            parameter_type = parameter_object.type
+            # TODO: Test & rename
+            parameter_type = self.get_type_string(parameter_object.type)
             return_text += f'{German.PARAMETER_DESCRIPTION_MULTIPLE.substitute(parameter_type=parameter_type,
                                                                                parameter_name=parameter_name)}, '
         return return_text[:-2]  # Remove trailing ", " gracefully

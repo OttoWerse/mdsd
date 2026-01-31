@@ -36,7 +36,7 @@ TYPE_DESCRIPTION = Template('''Der Typ von "$element_name" ist "$type_name". '''
 VISIBILITY_DESCRIPTION = Template('''Die Sichtbarkeit von "$element_name" ist "$visibility". ''')
 
 ATTRIBUTE_DESCRIPTION = Template(
-    '''Ein $attribute_visibility Attribut namens "$attribute_name" vom Typ "$attribute_type". ''')
+    '''Ein $attribute_visibility Attribut namens "$attribute_name" vom Typ $attribute_type. ''')
 
 """Operations"""
 OPERATION_DESCRIPTION_MULTIPLE_WITH_RETURN = Template(
@@ -53,11 +53,13 @@ OPERATION_DESCRIPTION_SINGLE_NO_RETURN = Template(
 )
 """Parameters"""
 PARAMETER_DESCRIPTION_SINGLE = Template(
-    '''"$parameter_name" vom Typ "$parameter_type"'''
+    '''"$parameter_name" vom Typ $parameter_type'''
 )
-PARAMETER_DESCRIPTION_MULTIPLE = Template(
-    '''Einen Parameter "$parameter_name" vom Typ "$parameter_type". '''
-)
+PARAMETER_DESCRIPTION_MULTIPLE_START = Template('''Einen Parameter "$parameter_name" vom Typ $parameter_type, ''')
+PARAMETER_DESCRIPTION_MULTIPLE_MIDDLE = Template('''einen Parameter "$parameter_name" vom Typ $parameter_type, ''')
+PARAMETER_DESCRIPTION_MULTIPLE_END = Template('''und einen Parameter "$parameter_name" vom Typ $parameter_type. ''')
+# TODO: Use above!
+PARAMETER_DESCRIPTION_MULTIPLE = Template('''Einen Parameter "$parameter_name" vom Typ $parameter_type. ''')
 
 RELATIONSHIP_NAME = Template(
     '''Beziehung namens "$relation_name"'''
