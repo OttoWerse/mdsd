@@ -20,9 +20,9 @@ class GermanRenderer:
     def render_class(self, class_object):
         return_text = ''
         class_name = class_object.name or German.EMPTY_CLASS_NAME
-        attribute_count = len(class_object.attributes.values())
+        attribute_count = self.get_number_string(number=len(class_object.attributes.values()), is_female=True)
         attribute_list = self.render_attribute_list(class_object.attributes.values())
-        operation_count = len(class_object.operations.values())
+        operation_count = self.get_number_string(number=len(class_object.operations.values()), is_female=True)
         operation_list = self.render_operation_list(class_object.operations.values())
         # Use Template to create formatted text into return_text
         return_text = German.CLASS_DESCRIPTION.substitute(

@@ -68,9 +68,7 @@ OPERATION_DESCRIPTION_SINGLE_NO_RETURN = Template(
     '''Die $visibility Methode "$operation_name" ohne Rückgabewert akzeptiert einen Parameter $parameters_text. '''
 )
 """Parameters"""
-PARAMETER_DESCRIPTION_SINGLE = Template(
-    '''"$parameter_name" vom Typ $parameter_type'''
-)
+PARAMETER_DESCRIPTION_SINGLE = Template('''"$parameter_name" vom Typ $parameter_type''')
 PARAMETER_DESCRIPTION_MULTIPLE_START = Template('''Einen Parameter "$parameter_name" vom Typ $parameter_type''')
 PARAMETER_DESCRIPTION_MULTIPLE_MIDDLE = Template(''', einen Parameter "$parameter_name" vom Typ $parameter_type''')
 PARAMETER_DESCRIPTION_MULTIPLE_END = Template(''' und einen Parameter "$parameter_name" vom Typ $parameter_type. ''')
