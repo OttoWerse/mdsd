@@ -1,3 +1,5 @@
+from unittest import case
+
 from constants import DataTypesUML, VisiblityUML, RelationshipsUML
 from templates import German
 
@@ -45,6 +47,43 @@ class GermanRenderer:
             case _:
                 input(attribute_type)
 
+    def get_number_string(self, number, is_female=False):
+        match number:
+            case 0:
+                if is_female:
+                    return German.NO_0_FEMALE
+                else:
+                    return German.NO_0_MALE
+            case 1:
+                if is_female:
+                    return German.NO_1_FEMALE
+                else:
+                    return German.NO_1_MALE
+            case 2:
+                return German.NO_2
+            case 3:
+                return German.NO_3
+            case 4:
+                return German.NO_4
+            case 5:
+                return German.NO_5
+            case 6:
+                return German.NO_6
+            case 7:
+                return German.NO_7
+            case 8:
+                return German.NO_7
+            case 9:
+                return German.NO_9
+            case 10:
+                return German.NO_10
+            case 11:
+                return German.NO_11
+            case 12:
+                return German.NO_12
+            case _:
+                return number
+
     def get_visibility_string(self, visibility):
         match visibility:
             case VisiblityUML.PUBLIC:
@@ -85,30 +124,29 @@ class GermanRenderer:
                     parameter_type = self.get_type_string(parameter_object.type)
                     parameter_text = German.PARAMETER_DESCRIPTION_SINGLE.substitute(parameter_type=parameter_type,
                                                                                     parameter_name=parameter_name)
-                    if operation_object.return_type == DataTypesUML.VOID:
+                    if operation_object.return_type == DataTypesUML.VOID or operation_object.return_type is None:
                         return_text += f'{German.OPERATION_DESCRIPTION_SINGLE_NO_RETURN.substitute(visibility=operation_visibility,
                                                                                                    operation_name=operation_name,
-                                                                                                   parameters_count=parameter_count,
                                                                                                    parameters_text=parameter_text, )} \n'
                     else:
                         return_text += f'{German.OPERATION_DESCRIPTION_SINGLE_WITH_RETURN.substitute(visibility=operation_visibility,
                                                                                                      operation_name=operation_name,
                                                                                                      return_type=operation_return_type,
-                                                                                                     parameters_count=parameter_count,
                                                                                                      parameters_text=parameter_text, )} \n'
             elif parameter_count > 1:
+                parameter_count_text = self.get_number_string(number=parameter_count, is_female=False)
                 parameter_list = self.render_parameter_list(operation_object.parameters.values())
                 # Use Template to create formatted text and append to return_text
-                if operation_object.return_type == DataTypesUML.VOID:
+                if operation_object.return_type == DataTypesUML.VOID or operation_object.return_type is None:
                     return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE_NO_RETURN.substitute(visibility=operation_visibility,
                                                                                                  operation_name=operation_name,
-                                                                                                 parameters_count=parameter_count,
+                                                                                                 parameters_count=parameter_count_text,
                                                                                                  parameters_list=parameter_list, )} \n'
                 else:
                     return_text += f'{German.OPERATION_DESCRIPTION_MULTIPLE_WITH_RETURN.substitute(visibility=operation_visibility,
                                                                                                    operation_name=operation_name,
                                                                                                    return_type=operation_return_type,
-                                                                                                   parameters_count=parameter_count,
+                                                                                                   parameters_count=parameter_count_text,
                                                                                                    parameters_list=parameter_list, )} \n'
             else:
                 pass  # TODO: Can this haappen unless the XMI file is broken?
@@ -116,13 +154,23 @@ class GermanRenderer:
 
     def render_parameter_list(self, parameters):
         return_text = ''
+        current_count = 0
+        total_count = len(parameters)
         for parameter_object in parameters:
+            current_count += 1
             parameter_direction = parameter_object.direction
             parameter_name = parameter_object.name or German.EMPTY_PARAMETER_NAME
             # TODO: Test & rename
             parameter_type = self.get_type_string(parameter_object.type)
-            return_text += f'{German.PARAMETER_DESCRIPTION_MULTIPLE.substitute(parameter_type=parameter_type,
-                                                                               parameter_name=parameter_name)}, '
+            if current_count == 1:
+                return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_START.substitute(parameter_type=parameter_type,
+                                                                                         parameter_name=parameter_name)
+            elif current_count == total_count:
+                return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_END.substitute(parameter_type=parameter_type,
+                                                                                       parameter_name=parameter_name)
+            else:
+                return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_MIDDLE.substitute(parameter_type=parameter_type,
+                                                                                          parameter_name=parameter_name)
         return return_text[:-2]  # Remove trailing ", " gracefully
 
     def render_relationship(self, relationship_object):

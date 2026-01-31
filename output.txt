@@ -1,9 +1,9 @@
 Die Klasse "Kombi Mikrowelle" repräsentiert eine Einheit im System. 
-Sie besitzt 2 Attribute; Ein privates Attribut namens "hersteller" vom Typ freitext. Ein privates Attribut namens "modell" vom Typ freitext.
-Zusätzlich stellt sie 4 Methoden bereit. Die öffentliche Methode "gareHuhn" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ gleitkommazahl.  
-Die öffentliche Methode "gareRind" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ gleitkommazahl.  
-Die öffentliche Methode "gareSchwein" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ gleitkommazahl.  
-Die öffentliche Methode "gareFisch" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ gleitkommazahl.  
+Sie besitzt 2 Attribute; Ein privates Attribut namens "hersteller" vom Typ Freitext. Ein privates Attribut namens "modell" vom Typ Freitext.
+Zusätzlich stellt sie 4 Methoden bereit. Die öffentliche Methode "gareHuhn" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ Gleitkommazahl.  
+Die öffentliche Methode "gareRind" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ Gleitkommazahl.  
+Die öffentliche Methode "gareSchwein" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ Gleitkommazahl.  
+Die öffentliche Methode "gareFisch" ohne Rückgabewert akzeptiert einen Parameter "gewicht" vom Typ Gleitkommazahl.  
  
 Die Klasse "Benutzer" repräsentiert eine Einheit im System. 
 Sie besitzt 0 Attribute; 
@@ -11,15 +11,15 @@ Zusätzlich stellt sie 0 Methoden bereit.
  
 Die Klasse "Mikrowelle" repräsentiert eine Einheit im System. 
 Sie besitzt 0 Attribute; 
-Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "bestrahlen" mit Rückgabewert None akzeptiert 2 Parameter. Einen Parameter "leistung" vom Typ ganze Zahl. , Einen Parameter "dauer" vom Typ gleitkommazahl.  
+Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "bestrahlen" ohne Rückgabewert akzeptiert zwei Parameter. Einen Parameter "leistung" vom Typ ganze Zahl und einen Parameter "dauer" vom Typ Gleitkommazahl 
  
 Die Klasse "Backofen" repräsentiert eine Einheit im System. 
 Sie besitzt 0 Attribute; 
-Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "backen" mit Rückgabewert None akzeptiert 2 Parameter. Einen Parameter "temperatur" vom Typ ganze Zahl. , Einen Parameter "dauer" vom Typ gleitkommazahl.  
+Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "backen" ohne Rückgabewert akzeptiert zwei Parameter. Einen Parameter "temperatur" vom Typ ganze Zahl und einen Parameter "dauer" vom Typ Gleitkommazahl 
  
 Die Klasse "Grill" repräsentiert eine Einheit im System. 
 Sie besitzt 0 Attribute; 
-Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "grillen" mit Rückgabewert None akzeptiert einen Parameter "dauer" vom Typ gleitkommazahl.  
+Zusätzlich stellt sie 1 Methoden bereit. Die öffentliche Methode "grillen" ohne Rückgabewert akzeptiert einen Parameter "dauer" vom Typ Gleitkommazahl.  
  
 Zwischen "Benutzer" und "Kombi Mikrowelle" besteht eine Beziehung namens "verwendet". 
 Zwischen "Kombi Mikrowelle" und "Mikrowelle" besteht eine Assoziation. 
