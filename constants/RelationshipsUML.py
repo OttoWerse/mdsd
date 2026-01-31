@@ -1,1 +1,3 @@
-ASSOCIATION = 'uml:Association'
+ASSOCIATION = 'none'
+AGGREGATION = 'shared'
+COMPOSITION = 'composite'

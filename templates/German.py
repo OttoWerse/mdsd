@@ -25,6 +25,8 @@ EMPTY_RELATIONSHIP_NAME = 'Namenlose Beziehung'
 
 """Strings for known relationship types"""
 ASSOCIATION_NAME = 'Assoziation'
+AGGREGATION_NAME = 'Aggregation'
+COMPOSITION_NAME = 'Komposition'
 
 """Strings for known datatypes"""
 DATATYPE_STRING = 'Freitext'
@@ -42,7 +44,7 @@ VISIBILITY_PACKAGE = 'paketweit sichtbare'
 
 CLASS_DESCRIPTION = Template(
     '''Die Klasse "$class_name" repräsentiert eine Einheit im System. 
-Sie besitzt $attribute_count Attribute; $attribute_list
+Sie besitzt $attribute_count Attribute. $attribute_list
 Zusätzlich stellt sie $method_count Methoden bereit. $method_list
 '''
 )

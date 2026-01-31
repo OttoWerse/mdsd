@@ -184,23 +184,27 @@ class XmiParser:
             try:
                 relationship_id = relationship_node[FieldNames.XMI_ID]
                 relationship_type = relationship_node[FieldNames.XMI_TYPE]
-                # Get name of relationship from XMI file or set it based on relationship type
-                try:
-                    relationship_name = relationship_node[FieldNames.NAME]
-                except Exception as e:
-                    relationship_name = relationship_type
                 # Get ends of relationship from XMI
-                ends = [child[FieldNames.TYPE] for child in relationship_node.children if
+                ends = [child for child in relationship_node.children if
                         child.name == FieldNames.OWNED_END]
                 # Check for exactly two ends
                 if len(ends) != 2:
-                    logger.exception(f'ERROR: more than two ends found for {relationship_name}')
+                    logger.exception(f'ERROR: more than two ends found for {relationship_id}')
                     sys.exit()
                 # Set left and right end of relationship
                 left_end = ends[0]
                 right_end = ends[1]
+                # Get special relationship kinds
+                relationship_aggregation = right_end[FieldNames.AGGREGATION]
+                # Get name of relationship from XMI file or set it based on relationship type
+                try:
+                    relationship_name = relationship_node[FieldNames.NAME]
+                except Exception as e:
+                    relationship_name = relationship_aggregation
                 # Create RelationshipModel Object and add to dict
-                return_relationships[relationship_id] = RelationshipModel(relationship_name, left_end, right_end)
+                return_relationships[relationship_id] = RelationshipModel(relationship_name,
+                                                                          left_end[FieldNames.TYPE],
+                                                                          right_end[FieldNames.TYPE])
             except Exception as e:
                 logger.exception(f'EXCEPTION parsing relationship: {e}')
                 sys.exit()

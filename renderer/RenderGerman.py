@@ -164,21 +164,26 @@ class GermanRenderer:
             parameter_type = self.get_type_string(parameter_object.type)
             if current_count == 1:
                 return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_START.substitute(parameter_type=parameter_type,
-                                                                                         parameter_name=parameter_name)
+                                                                                      parameter_name=parameter_name)
             elif current_count == total_count:
                 return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_END.substitute(parameter_type=parameter_type,
-                                                                                       parameter_name=parameter_name)
+                                                                                    parameter_name=parameter_name)
             else:
                 return_text += German.PARAMETER_DESCRIPTION_MULTIPLE_MIDDLE.substitute(parameter_type=parameter_type,
-                                                                                          parameter_name=parameter_name)
+                                                                                       parameter_name=parameter_name)
         return return_text[:-2]  # Remove trailing ", " gracefully
 
     def render_relationship(self, relationship_object):
         return_text = ''
         relationship_name = relationship_object.name
         match relationship_name:
+            # TODO: Generalization works entirely different from others and needs to be handled in parser!
             case RelationshipsUML.ASSOCIATION:
                 relationship_name = German.ASSOCIATION_NAME
+            case RelationshipsUML.AGGREGATION:
+                relationship_name = German.AGGREGATION_NAME
+            case RelationshipsUML.COMPOSITION:
+                relationship_name = German.COMPOSITION_NAME
             case '':
                 relationship_name = German.EMPTY_RELATIONSHIP_NAME
             case _:
