@@ -24,10 +24,6 @@ VISIBILITY_PUBLIC = 'öffentliche'
 VISIBILITY_PROTECTED = 'geschützte'
 VISIBILITY_PACKAGE = 'paketweit sichtbare'
 
-"""Templates"""
-CLASSES_HEADING = 'Klassen: \n'
-RELATIONSHIP_HEADING = 'Berechnungen: \n'
-
 CLASS_DESCRIPTION = Template(
     '''Die Klasse "$class_name" repräsentiert eine Einheit im System. 
 Sie besitzt $attribute_count Attribute; $attribute_list

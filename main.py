@@ -4,7 +4,6 @@ from renderer.RenderGerman import GermanRenderer
 
 if __name__ == "__main__":
     """Main function"""
-    print('START TEST')
     argument_parser = argparse.ArgumentParser("ParseXMI")
     argument_parser.add_argument("--xmi_path",
                                  type=str,
@@ -22,5 +21,10 @@ if __name__ == "__main__":
     german_renderer = GermanRenderer(classes=classes,
                                      relationships=relationships, )
     output_string = german_renderer.render_class_diagram()
-    print(output_string)
-    print('END TEST')
+    save_file_input = input('Save output to file? (Y/N)')
+    match save_file_input.lower():
+        case 'y':
+            with open('output.txt', 'w', encoding='utf-8') as file:
+                file.write(output_string)
+        case 'n':
+            print(output_string)

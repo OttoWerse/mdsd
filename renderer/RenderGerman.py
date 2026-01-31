@@ -8,10 +8,9 @@ class GermanRenderer:
         self.relationships = relationships
 
     def render_class_diagram(self):
-        return_text = German.CLASSES_HEADING
+        return_text = ''
         for class_object in self.classes.values():
             return_text += f'{self.render_class(class_object)} \n'
-        return_text += German.RELATIONSHIP_HEADING
         for relationship_object in self.relationships.values():
             return_text += f'{self.render_relationship(relationship_object)} \n'
         return return_text
